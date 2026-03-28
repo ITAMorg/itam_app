@@ -49,18 +49,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLogo() {
     return Column(
       children: [
-        Container(
-          width: 90,
-          height: 90,
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Icon(
-            Icons.memory,
-            color: AppColors.primary,
-            size: 56,
-          ),
+        Image.asset(
+          'assets/icons/itam_logo_big.png',
+          width: 120,
+          height: 120,
         ),
         const SizedBox(height: 16),
         Text('ITAM', style: AppTextStyles.titleLarge),
