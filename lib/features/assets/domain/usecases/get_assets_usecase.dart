@@ -9,4 +9,8 @@ class GetAssetsUseCase {
   Future<List<Asset>> call() async {
     return await _repository.getAssets();
   }
+
+  Future<List<Asset>> getByLocation(int locationId) async {
+    return await _repository.getAssetsByLocation(locationId);
+  }
 }

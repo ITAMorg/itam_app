@@ -26,6 +26,7 @@ mixin _$UserModel {
   String get role => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
+  int? get locationId => throw _privateConstructorUsedError;
 
   /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $UserModelCopyWith<$Res> {
     String role,
     String firstName,
     String lastName,
+    int? locationId,
   });
 }
 
@@ -71,6 +73,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? role = null,
     Object? firstName = null,
     Object? lastName = null,
+    Object? locationId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -94,6 +97,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
                 ? _value.lastName
                 : lastName // ignore: cast_nullable_to_non_nullable
                       as String,
+            locationId: freezed == locationId
+                ? _value.locationId
+                : locationId // ignore: cast_nullable_to_non_nullable
+                      as int?,
           )
           as $Val,
     );
@@ -115,6 +122,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
     String role,
     String firstName,
     String lastName,
+    int? locationId,
   });
 }
 
@@ -137,6 +145,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? role = null,
     Object? firstName = null,
     Object? lastName = null,
+    Object? locationId = freezed,
   }) {
     return _then(
       _$UserModelImpl(
@@ -160,6 +169,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
             ? _value.lastName
             : lastName // ignore: cast_nullable_to_non_nullable
                   as String,
+        locationId: freezed == locationId
+            ? _value.locationId
+            : locationId // ignore: cast_nullable_to_non_nullable
+                  as int?,
       ),
     );
   }
@@ -174,6 +187,7 @@ class _$UserModelImpl implements _UserModel {
     required this.role,
     required this.firstName,
     required this.lastName,
+    this.locationId,
   });
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -189,10 +203,12 @@ class _$UserModelImpl implements _UserModel {
   final String firstName;
   @override
   final String lastName;
+  @override
+  final int? locationId;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, role: $role, firstName: $firstName, lastName: $lastName)';
+    return 'UserModel(id: $id, email: $email, role: $role, firstName: $firstName, lastName: $lastName, locationId: $locationId)';
   }
 
   @override
@@ -206,13 +222,22 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
-                other.lastName == lastName));
+                other.lastName == lastName) &&
+            (identical(other.locationId, locationId) ||
+                other.locationId == locationId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, email, role, firstName, lastName);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    email,
+    role,
+    firstName,
+    lastName,
+    locationId,
+  );
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -235,6 +260,7 @@ abstract class _UserModel implements UserModel {
     required final String role,
     required final String firstName,
     required final String lastName,
+    final int? locationId,
   }) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -250,6 +276,8 @@ abstract class _UserModel implements UserModel {
   String get firstName;
   @override
   String get lastName;
+  @override
+  int? get locationId;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.

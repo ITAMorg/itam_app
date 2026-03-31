@@ -7,6 +7,7 @@ part 'asset_model.g.dart';
 @freezed
 class AssetTypeModel with _$AssetTypeModel {
   const factory AssetTypeModel({
+    required int id,
     required String name,
     required String iconKey,
     required String colorKey,
@@ -17,14 +18,25 @@ class AssetTypeModel with _$AssetTypeModel {
 }
 
 @freezed
+class AssetLocationModel with _$AssetLocationModel {
+  const factory AssetLocationModel({
+    required int id,
+    required String name,
+  }) = _AssetLocationModel;
+
+  factory AssetLocationModel.fromJson(Map<String, dynamic> json) =>
+      _$AssetLocationModelFromJson(json);
+}
+
+@freezed
 class AssetModel with _$AssetModel {
   const factory AssetModel({
-    required String id,
+    required int id,
     required String name,
     required String serialNumber,
     required String status,
-    required AssetTypeModel assetType,
-    required String location,
+    @JsonKey(name: 'type') required AssetTypeModel assetType,
+    AssetLocationModel? location,
     required String purchaseDate,
     String? warrantyEnd,
   }) = _AssetModel;
@@ -36,7 +48,7 @@ class AssetModel with _$AssetModel {
 extension AssetModelMapper on AssetModel {
   Asset toEntity() {
     return Asset(
-      id: id,
+      id: id.toString(),
       name: name,
       serialNumber: serialNumber,
       status: _mapStatus(status),
@@ -45,7 +57,7 @@ extension AssetModelMapper on AssetModel {
         iconKey: assetType.iconKey,
         colorKey: assetType.colorKey,
       ),
-      location: location,
+      location: location?.name ?? 'Non assigné',
       purchaseDate: DateTime.parse(purchaseDate),
       warrantyEnd: warrantyEnd != null ? DateTime.parse(warrantyEnd!) : null,
     );

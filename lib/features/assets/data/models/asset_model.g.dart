@@ -8,6 +8,7 @@ part of 'asset_model.dart';
 
 _$AssetTypeModelImpl _$$AssetTypeModelImplFromJson(Map<String, dynamic> json) =>
     _$AssetTypeModelImpl(
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       iconKey: json['iconKey'] as String,
       colorKey: json['colorKey'] as String,
@@ -16,21 +17,35 @@ _$AssetTypeModelImpl _$$AssetTypeModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$AssetTypeModelImplToJson(
   _$AssetTypeModelImpl instance,
 ) => <String, dynamic>{
+  'id': instance.id,
   'name': instance.name,
   'iconKey': instance.iconKey,
   'colorKey': instance.colorKey,
 };
 
+_$AssetLocationModelImpl _$$AssetLocationModelImplFromJson(
+  Map<String, dynamic> json,
+) => _$AssetLocationModelImpl(
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+);
+
+Map<String, dynamic> _$$AssetLocationModelImplToJson(
+  _$AssetLocationModelImpl instance,
+) => <String, dynamic>{'id': instance.id, 'name': instance.name};
+
 _$AssetModelImpl _$$AssetModelImplFromJson(Map<String, dynamic> json) =>
     _$AssetModelImpl(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       serialNumber: json['serialNumber'] as String,
       status: json['status'] as String,
-      assetType: AssetTypeModel.fromJson(
-        json['assetType'] as Map<String, dynamic>,
-      ),
-      location: json['location'] as String,
+      assetType: AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),
+      location: json['location'] == null
+          ? null
+          : AssetLocationModel.fromJson(
+              json['location'] as Map<String, dynamic>,
+            ),
       purchaseDate: json['purchaseDate'] as String,
       warrantyEnd: json['warrantyEnd'] as String?,
     );
@@ -41,7 +56,7 @@ Map<String, dynamic> _$$AssetModelImplToJson(_$AssetModelImpl instance) =>
       'name': instance.name,
       'serialNumber': instance.serialNumber,
       'status': instance.status,
-      'assetType': instance.assetType,
+      'type': instance.assetType,
       'location': instance.location,
       'purchaseDate': instance.purchaseDate,
       'warrantyEnd': instance.warrantyEnd,

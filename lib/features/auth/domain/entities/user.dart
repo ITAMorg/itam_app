@@ -10,5 +10,6 @@ abstract class User with _$User {
     required String role,
     required String firstName,
     required String lastName,
+    int? locationId,
   }) = _User;
 }

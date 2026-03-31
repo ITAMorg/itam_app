@@ -11,7 +11,16 @@ class AssetRepositoryImpl implements AssetRepository {
   @override
   Future<List<Asset>> getAssets() async {
     final response = await _dio.get('/assets');
-    final List<dynamic> data = response.data['data'];
+    final List<dynamic> data = response.data as List<dynamic>;
+    return data
+        .map((json) => AssetModel.fromJson(json).toEntity())
+        .toList();
+  }
+
+  @override
+  Future<List<Asset>> getAssetsByLocation(int locationId) async {
+    final response = await _dio.get('/assets/location/$locationId');
+    final List<dynamic> data = response.data as List<dynamic>;
     return data
         .map((json) => AssetModel.fromJson(json).toEntity())
         .toList();

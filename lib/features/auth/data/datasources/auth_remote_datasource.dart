@@ -71,14 +71,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final jwt = JWT.decode(token);
       final payload = jwt.payload as Map<String, dynamic>;
 
+      // Debug
+      print('=== JWT PAYLOAD ===');
+      payload.forEach((key, value) {
+        print('$key: ${value.runtimeType} = $value');
+      });
+
       return UserModel(
-        id: payload['userId'] as int,
+        id: (payload['userId'] as num).toInt(),
         email: payload['email'] as String,
         role: payload['role'] as String,
         firstName: '',
         lastName: '',
+        locationId: payload['locationId'] != null
+            ? (payload['locationId'] as num).toInt()
+            : null,
       );
-    } catch (_) {
+    } catch (e) {
+      print('getCurrentUser error: $e');
       return null;
     }
   }

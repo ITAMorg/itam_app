@@ -13,6 +13,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       role: json['role'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
+      locationId: (json['locationId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'role': instance.role,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
+      'locationId': instance.locationId,
     };

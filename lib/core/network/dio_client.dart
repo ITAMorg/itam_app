@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../constants/api_constants.dart';
+import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart';
 
 part 'dio_client.g.dart';
 
@@ -12,6 +13,17 @@ const _refreshTokenKey = 'refresh_token';
 @riverpod
 Dio dioClient(Ref ref) {
   final storage = const FlutterSecureStorage();
+
+  // Instance Dio séparée pour le refresh — évite la boucle infinie
+  final refreshDio = Dio(
+    BaseOptions(
+      baseUrl: ApiConstants.baseUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {'Content-Type': 'application/json'},
+    ),
+  );
+
   final dio = Dio(
     BaseOptions(
       baseUrl: ApiConstants.baseUrl,
@@ -32,12 +44,17 @@ Dio dioClient(Ref ref) {
       },
       onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
-          final refreshed = await _tryRefreshToken(dio, storage);
+          final refreshed = await _tryRefreshToken(refreshDio, storage);
           if (refreshed) {
             final token = await storage.read(key: _accessTokenKey);
             error.requestOptions.headers['Authorization'] = 'Bearer $token';
             final response = await dio.fetch(error.requestOptions);
             return handler.resolve(response);
+          } else {
+            // Refresh échoué — on vide le storage et on invalide l'auth
+            await storage.deleteAll();
+            ref.invalidate(authNotifierProvider);
+            return handler.next(error);
           }
         }
         handler.next(error);
@@ -48,12 +65,12 @@ Dio dioClient(Ref ref) {
   return dio;
 }
 
-Future<bool> _tryRefreshToken(Dio dio, FlutterSecureStorage storage) async {
+Future<bool> _tryRefreshToken(Dio refreshDio, FlutterSecureStorage storage) async {
   try {
     final refreshToken = await storage.read(key: _refreshTokenKey);
     if (refreshToken == null) return false;
 
-    final response = await dio.post(
+    final response = await refreshDio.post(
       ApiConstants.refresh,
       data: {'refreshToken': refreshToken},
     );
@@ -70,7 +87,6 @@ Future<bool> _tryRefreshToken(Dio dio, FlutterSecureStorage storage) async {
 
     return true;
   } catch (_) {
-    await storage.deleteAll();
     return false;
   }
 }

@@ -22,6 +22,7 @@ mixin _$User {
   String get role => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
+  int? get locationId => throw _privateConstructorUsedError;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -40,6 +41,7 @@ abstract class $UserCopyWith<$Res> {
     String role,
     String firstName,
     String lastName,
+    int? locationId,
   });
 }
 
@@ -63,6 +65,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? role = null,
     Object? firstName = null,
     Object? lastName = null,
+    Object? locationId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -86,6 +89,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
                 ? _value.lastName
                 : lastName // ignore: cast_nullable_to_non_nullable
                       as String,
+            locationId: freezed == locationId
+                ? _value.locationId
+                : locationId // ignore: cast_nullable_to_non_nullable
+                      as int?,
           )
           as $Val,
     );
@@ -106,6 +113,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
     String role,
     String firstName,
     String lastName,
+    int? locationId,
   });
 }
 
@@ -126,6 +134,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? role = null,
     Object? firstName = null,
     Object? lastName = null,
+    Object? locationId = freezed,
   }) {
     return _then(
       _$UserImpl(
@@ -149,6 +158,10 @@ class __$$UserImplCopyWithImpl<$Res>
             ? _value.lastName
             : lastName // ignore: cast_nullable_to_non_nullable
                   as String,
+        locationId: freezed == locationId
+            ? _value.locationId
+            : locationId // ignore: cast_nullable_to_non_nullable
+                  as int?,
       ),
     );
   }
@@ -163,6 +176,7 @@ class _$UserImpl implements _User {
     required this.role,
     required this.firstName,
     required this.lastName,
+    this.locationId,
   });
 
   @override
@@ -175,10 +189,12 @@ class _$UserImpl implements _User {
   final String firstName;
   @override
   final String lastName;
+  @override
+  final int? locationId;
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, role: $role, firstName: $firstName, lastName: $lastName)';
+    return 'User(id: $id, email: $email, role: $role, firstName: $firstName, lastName: $lastName, locationId: $locationId)';
   }
 
   @override
@@ -192,12 +208,21 @@ class _$UserImpl implements _User {
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
-                other.lastName == lastName));
+                other.lastName == lastName) &&
+            (identical(other.locationId, locationId) ||
+                other.locationId == locationId));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, email, role, firstName, lastName);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    email,
+    role,
+    firstName,
+    lastName,
+    locationId,
+  );
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -215,6 +240,7 @@ abstract class _User implements User {
     required final String role,
     required final String firstName,
     required final String lastName,
+    final int? locationId,
   }) = _$UserImpl;
 
   @override
@@ -227,6 +253,8 @@ abstract class _User implements User {
   String get firstName;
   @override
   String get lastName;
+  @override
+  int? get locationId;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
