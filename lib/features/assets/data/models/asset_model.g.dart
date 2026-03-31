@@ -34,21 +34,20 @@ Map<String, dynamic> _$$AssetLocationModelImplToJson(
   _$AssetLocationModelImpl instance,
 ) => <String, dynamic>{'id': instance.id, 'name': instance.name};
 
-_$AssetModelImpl _$$AssetModelImplFromJson(Map<String, dynamic> json) =>
-    _$AssetModelImpl(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      serialNumber: json['serialNumber'] as String,
-      status: json['status'] as String,
-      assetType: AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),
-      location: json['location'] == null
-          ? null
-          : AssetLocationModel.fromJson(
-              json['location'] as Map<String, dynamic>,
-            ),
-      purchaseDate: json['purchaseDate'] as String,
-      warrantyEnd: json['warrantyEnd'] as String?,
-    );
+_$AssetModelImpl _$$AssetModelImplFromJson(
+  Map<String, dynamic> json,
+) => _$AssetModelImpl(
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+  serialNumber: json['serialNumber'] as String,
+  status: json['status'] as String,
+  assetType: AssetTypeModel.fromJson(json['assetType'] as Map<String, dynamic>),
+  location: json['location'] == null
+      ? null
+      : AssetLocationModel.fromJson(json['location'] as Map<String, dynamic>),
+  purchaseDate: json['purchaseDate'] as String,
+  warrantyEnd: json['warrantyEnd'] as String?,
+);
 
 Map<String, dynamic> _$$AssetModelImplToJson(_$AssetModelImpl instance) =>
     <String, dynamic>{
@@ -56,7 +55,7 @@ Map<String, dynamic> _$$AssetModelImplToJson(_$AssetModelImpl instance) =>
       'name': instance.name,
       'serialNumber': instance.serialNumber,
       'status': instance.status,
-      'type': instance.assetType,
+      'assetType': instance.assetType,
       'location': instance.location,
       'purchaseDate': instance.purchaseDate,
       'warrantyEnd': instance.warrantyEnd,

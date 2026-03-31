@@ -35,14 +35,25 @@ class AssetModel with _$AssetModel {
     required String name,
     required String serialNumber,
     required String status,
-    @JsonKey(name: 'type') required AssetTypeModel assetType,
+    required AssetTypeModel assetType,
     AssetLocationModel? location,
     required String purchaseDate,
     String? warrantyEnd,
   }) = _AssetModel;
 
   factory AssetModel.fromJson(Map<String, dynamic> json) =>
-      _$AssetModelFromJson(json);
+    AssetModel(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      serialNumber: json['serialNumber'] as String,
+      status: json['status'] as String,
+      assetType: AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),
+      location: json['location'] == null
+          ? null
+          : AssetLocationModel.fromJson(json['location'] as Map<String, dynamic>),
+      purchaseDate: json['purchaseDate'] as String,
+      warrantyEnd: json['warrantyEnd'] as String?,
+    );
 }
 
 extension AssetModelMapper on AssetModel {

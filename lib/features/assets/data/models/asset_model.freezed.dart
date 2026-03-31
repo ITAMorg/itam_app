@@ -413,7 +413,6 @@ mixin _$AssetModel {
   String get name => throw _privateConstructorUsedError;
   String get serialNumber => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'type')
   AssetTypeModel get assetType => throw _privateConstructorUsedError;
   AssetLocationModel? get location => throw _privateConstructorUsedError;
   String get purchaseDate => throw _privateConstructorUsedError;
@@ -441,7 +440,7 @@ abstract class $AssetModelCopyWith<$Res> {
     String name,
     String serialNumber,
     String status,
-    @JsonKey(name: 'type') AssetTypeModel assetType,
+    AssetTypeModel assetType,
     AssetLocationModel? location,
     String purchaseDate,
     String? warrantyEnd,
@@ -553,7 +552,7 @@ abstract class _$$AssetModelImplCopyWith<$Res>
     String name,
     String serialNumber,
     String status,
-    @JsonKey(name: 'type') AssetTypeModel assetType,
+    AssetTypeModel assetType,
     AssetLocationModel? location,
     String purchaseDate,
     String? warrantyEnd,
@@ -635,7 +634,7 @@ class _$AssetModelImpl implements _AssetModel {
     required this.name,
     required this.serialNumber,
     required this.status,
-    @JsonKey(name: 'type') required this.assetType,
+    required this.assetType,
     this.location,
     required this.purchaseDate,
     this.warrantyEnd,
@@ -653,7 +652,6 @@ class _$AssetModelImpl implements _AssetModel {
   @override
   final String status;
   @override
-  @JsonKey(name: 'type')
   final AssetTypeModel assetType;
   @override
   final AssetLocationModel? location;
@@ -721,7 +719,7 @@ abstract class _AssetModel implements AssetModel {
     required final String name,
     required final String serialNumber,
     required final String status,
-    @JsonKey(name: 'type') required final AssetTypeModel assetType,
+    required final AssetTypeModel assetType,
     final AssetLocationModel? location,
     required final String purchaseDate,
     final String? warrantyEnd,
@@ -739,7 +737,6 @@ abstract class _AssetModel implements AssetModel {
   @override
   String get status;
   @override
-  @JsonKey(name: 'type')
   AssetTypeModel get assetType;
   @override
   AssetLocationModel? get location;

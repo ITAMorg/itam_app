@@ -7,6 +7,7 @@ import '../../../../core/network/dio_client.dart';
 import '../models/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:flutter/foundation.dart';
 
 part 'auth_remote_datasource.g.dart';
 
@@ -72,9 +73,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final payload = jwt.payload as Map<String, dynamic>;
 
       // Debug
-      print('=== JWT PAYLOAD ===');
+      debugPrint('=== JWT PAYLOAD ===');
       payload.forEach((key, value) {
-        print('$key: ${value.runtimeType} = $value');
+        debugPrint('$key: ${value.runtimeType} = $value');
       });
 
       return UserModel(
@@ -88,7 +89,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             : null,
       );
     } catch (e) {
-      print('getCurrentUser error: $e');
+      debugPrint('getCurrentUser error: $e');
       return null;
     }
   }
