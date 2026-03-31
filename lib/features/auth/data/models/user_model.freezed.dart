@@ -24,9 +24,7 @@ mixin _$UserModel {
   int get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
-  @JsonKey(name: 'firstName')
   String get firstName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'lastName')
   String get lastName => throw _privateConstructorUsedError;
 
   /// Serializes this UserModel to a JSON map.
@@ -48,8 +46,8 @@ abstract class $UserModelCopyWith<$Res> {
     int id,
     String email,
     String role,
-    @JsonKey(name: 'firstName') String firstName,
-    @JsonKey(name: 'lastName') String lastName,
+    String firstName,
+    String lastName,
   });
 }
 
@@ -115,8 +113,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
     int id,
     String email,
     String role,
-    @JsonKey(name: 'firstName') String firstName,
-    @JsonKey(name: 'lastName') String lastName,
+    String firstName,
+    String lastName,
   });
 }
 
@@ -174,8 +172,8 @@ class _$UserModelImpl implements _UserModel {
     required this.id,
     required this.email,
     required this.role,
-    @JsonKey(name: 'firstName') required this.firstName,
-    @JsonKey(name: 'lastName') required this.lastName,
+    required this.firstName,
+    required this.lastName,
   });
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -188,10 +186,8 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String role;
   @override
-  @JsonKey(name: 'firstName')
   final String firstName;
   @override
-  @JsonKey(name: 'lastName')
   final String lastName;
 
   @override
@@ -237,8 +233,8 @@ abstract class _UserModel implements UserModel {
     required final int id,
     required final String email,
     required final String role,
-    @JsonKey(name: 'firstName') required final String firstName,
-    @JsonKey(name: 'lastName') required final String lastName,
+    required final String firstName,
+    required final String lastName,
   }) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -251,10 +247,8 @@ abstract class _UserModel implements UserModel {
   @override
   String get role;
   @override
-  @JsonKey(name: 'firstName')
   String get firstName;
   @override
-  @JsonKey(name: 'lastName')
   String get lastName;
 
   /// Create a copy of UserModel

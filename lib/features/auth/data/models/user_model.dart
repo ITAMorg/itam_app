@@ -10,8 +10,8 @@ abstract class UserModel with _$UserModel {
     required int id,
     required String email,
     required String role,
-    @JsonKey(name: 'firstName') required String firstName,
-    @JsonKey(name: 'lastName') required String lastName,
+    required String firstName,
+    required String lastName,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
