@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
-import '../../features/assets/presentation/pages/home_page.dart';
+import '../../features/assets/presentation/pages/assets_list_page.dart';
+import '../../core/widgets/app_shell.dart';
 
 part 'app_router.g.dart';
 
@@ -12,7 +13,7 @@ GoRouter appRouter(Ref ref) {
   final authState = ref.watch(authNotifierProvider);
 
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/assets',
     redirect: (context, state) {
       final isAuthenticated = authState.status == AuthStatus.authenticated;
       final isInitial = authState.status == AuthStatus.initial;
@@ -20,7 +21,7 @@ GoRouter appRouter(Ref ref) {
 
       if (isInitial) return null;
       if (!isAuthenticated && !isOnLogin) return '/login';
-      if (isAuthenticated && isOnLogin) return '/home';
+      if (isAuthenticated && isOnLogin) return '/assets';
       return null;
     },
     routes: [
@@ -28,9 +29,39 @@ GoRouter appRouter(Ref ref) {
         path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            AppShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/assets',
+                builder: (context, state) => const AssetListPage(),
+              ),
+            ],
+          ),
+          // StatefulShellBranch(
+          //   routes: [
+          //     GoRoute(
+          //       path: '/scanner',
+          //       builder: (context, state) => const Scaffold(
+          //         body: Center(child: Text('Scanner')),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // StatefulShellBranch(
+          //   routes: [
+          //     GoRoute(
+          //       path: '/tickets',
+          //       builder: (context, state) => const Scaffold(
+          //         body: Center(child: Text('Tickets')),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+        ],
       ),
     ],
   );
