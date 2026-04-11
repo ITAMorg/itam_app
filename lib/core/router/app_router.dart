@@ -30,6 +30,12 @@ GoRouter appRouter(Ref ref) {
         path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
+      GoRoute(
+        path: '/assets/:id', 
+        builder: (context, state) => AssetDetailPage(
+          assetId: state.pathParameters['id']!,
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
@@ -39,14 +45,6 @@ GoRouter appRouter(Ref ref) {
               GoRoute(
                 path: '/assets',
                 builder: (context, state) => const AssetListPage(),
-                routes: [
-                  GoRoute(
-                    path: ':id', 
-                    builder: (context, state) => AssetDetailPage(
-                      assetId: state.pathParameters['id']!,
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

@@ -36,7 +36,7 @@ class AssetCard extends StatelessWidget {
     final horizontalPadding = isDesktop ? 32.0 : 16.0;
 
     return GestureDetector(
-      onTap: () => context.go('/assets/${asset.id}'),
+      onTap: () => context.push('/assets/${asset.id}'),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Container(
