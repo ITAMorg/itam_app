@@ -1,28 +1,37 @@
-import 'package:dio/dio.dart';
-import 'package:itam_app/features/assets/data/models/asset_model.dart';
-import 'package:itam_app/features/assets/domain/entities/asset.dart';
-import 'package:itam_app/features/assets/domain/repositories/asset_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../domain/entities/asset.dart';
+import '../../domain/repositories/asset_repository.dart';
+import '../datasources/asset_remote_datasource.dart';
+import '../models/asset_model.dart';
+
+part 'asset_repository_impl.g.dart';
 
 class AssetRepositoryImpl implements AssetRepository {
-  final Dio _dio;
+  final AssetRemoteDataSource _datasource;
 
-  AssetRepositoryImpl(this._dio);
+  const AssetRepositoryImpl(this._datasource);
 
   @override
   Future<List<Asset>> getAssets() async {
-    final response = await _dio.get('/assets');
-    final List<dynamic> data = response.data as List<dynamic>;
-    return data
-        .map((json) => AssetModel.fromJson(json).toEntity())
-        .toList();
+    final models = await _datasource.getAssets();
+    return models.map((m) => m.toEntity()).toList();
   }
 
   @override
   Future<List<Asset>> getAssetsByLocation(int locationId) async {
-    final response = await _dio.get('/assets/location/$locationId');
-    final List<dynamic> data = response.data as List<dynamic>;
-    return data
-        .map((json) => AssetModel.fromJson(json).toEntity())
-        .toList();
+    final models = await _datasource.getAssetsByLocation(locationId);
+    return models.map((m) => m.toEntity()).toList();
   }
+
+  @override
+  Future<Asset> getAssetById(String id) async {
+    final model = await _datasource.getAssetById(id);
+    return model.toEntity();
+  }
+}
+
+@riverpod
+AssetRepository assetRepository(Ref ref) {
+  return AssetRepositoryImpl(ref.watch(assetRemoteDataSourceProvider));
 }
