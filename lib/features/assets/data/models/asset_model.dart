@@ -29,6 +29,17 @@ class AssetLocationModel with _$AssetLocationModel {
 }
 
 @freezed
+class AssetSupplierModel with _$AssetSupplierModel {
+  const factory AssetSupplierModel({
+    required int id,
+    required String name,
+  }) = _AssetSupplierModel;
+
+  factory AssetSupplierModel.fromJson(Map<String, dynamic> json) =>
+      _$AssetSupplierModelFromJson(json);
+}
+
+@freezed
 class AssetModel with _$AssetModel {
   const factory AssetModel({
     required int id,
@@ -37,6 +48,9 @@ class AssetModel with _$AssetModel {
     required String status,
     @JsonKey(name: 'type') required AssetTypeModel assetType,
     AssetLocationModel? location,
+    AssetSupplierModel? supplier,
+    String? brand,
+    String? model,
     required String purchaseDate,
     String? warrantyEnd,
   }) = _AssetModel;
@@ -53,11 +67,19 @@ extension AssetModelMapper on AssetModel {
       serialNumber: serialNumber,
       status: _mapStatus(status),
       assetType: AssetType(
+        id: assetType.id,
         name: assetType.name,
         iconKey: assetType.iconKey,
         colorKey: assetType.colorKey,
       ),
-      location: location?.name ?? 'Non assigné',
+      location: location != null
+          ? AssetLocation(id: location!.id, name: location!.name)
+          : null,
+      supplier: supplier != null
+          ? AssetSupplier(id: supplier!.id, name: supplier!.name)
+          : null,
+      brand: brand,
+      model: model,
       purchaseDate: DateTime.parse(purchaseDate),
       warrantyEnd: warrantyEnd != null ? DateTime.parse(warrantyEnd!) : null,
     );

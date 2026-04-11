@@ -80,7 +80,7 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
             data: (assets) {
               final filtered = assets.where((a) {
                 return a.name.toLowerCase().contains(_searchQuery) ||
-                    a.location.toLowerCase().contains(_searchQuery) ||
+                    (a.location?.name ?? '').toLowerCase().contains(_searchQuery) || // ← changement ici
                     a.assetType.name.toLowerCase().contains(_searchQuery);
               }).toList();
 

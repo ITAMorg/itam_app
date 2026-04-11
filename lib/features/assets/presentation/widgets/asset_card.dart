@@ -47,7 +47,6 @@ class AssetCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Icône type asset
             Container(
               width: 44,
               height: 44,
@@ -59,7 +58,6 @@ class AssetCard extends StatelessWidget {
               child: Icon(iconData, color: Colors.white, size: 22),
             ),
             const SizedBox(width: 14),
-            // Nom + location
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +70,7 @@ class AssetCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    asset.location,
+                    asset.location?.name ?? 'Non assigné', // ← changement ici
                     style: Theme.of(context).textTheme.bodyMedium,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -81,7 +79,6 @@ class AssetCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            // Badge statut
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
