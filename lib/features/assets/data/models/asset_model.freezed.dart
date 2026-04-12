@@ -403,6 +403,177 @@ abstract class _AssetLocationModel implements AssetLocationModel {
       throw _privateConstructorUsedError;
 }
 
+AssetSupplierModel _$AssetSupplierModelFromJson(Map<String, dynamic> json) {
+  return _AssetSupplierModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AssetSupplierModel {
+  int get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+
+  /// Serializes this AssetSupplierModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of AssetSupplierModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AssetSupplierModelCopyWith<AssetSupplierModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AssetSupplierModelCopyWith<$Res> {
+  factory $AssetSupplierModelCopyWith(
+    AssetSupplierModel value,
+    $Res Function(AssetSupplierModel) then,
+  ) = _$AssetSupplierModelCopyWithImpl<$Res, AssetSupplierModel>;
+  @useResult
+  $Res call({int id, String name});
+}
+
+/// @nodoc
+class _$AssetSupplierModelCopyWithImpl<$Res, $Val extends AssetSupplierModel>
+    implements $AssetSupplierModelCopyWith<$Res> {
+  _$AssetSupplierModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of AssetSupplierModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? id = null, Object? name = null}) {
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as int,
+            name: null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$AssetSupplierModelImplCopyWith<$Res>
+    implements $AssetSupplierModelCopyWith<$Res> {
+  factory _$$AssetSupplierModelImplCopyWith(
+    _$AssetSupplierModelImpl value,
+    $Res Function(_$AssetSupplierModelImpl) then,
+  ) = __$$AssetSupplierModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id, String name});
+}
+
+/// @nodoc
+class __$$AssetSupplierModelImplCopyWithImpl<$Res>
+    extends _$AssetSupplierModelCopyWithImpl<$Res, _$AssetSupplierModelImpl>
+    implements _$$AssetSupplierModelImplCopyWith<$Res> {
+  __$$AssetSupplierModelImplCopyWithImpl(
+    _$AssetSupplierModelImpl _value,
+    $Res Function(_$AssetSupplierModelImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of AssetSupplierModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? id = null, Object? name = null}) {
+    return _then(
+      _$AssetSupplierModelImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as int,
+        name: null == name
+            ? _value.name
+            : name // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AssetSupplierModelImpl implements _AssetSupplierModel {
+  const _$AssetSupplierModelImpl({required this.id, required this.name});
+
+  factory _$AssetSupplierModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AssetSupplierModelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String name;
+
+  @override
+  String toString() {
+    return 'AssetSupplierModel(id: $id, name: $name)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AssetSupplierModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name);
+
+  /// Create a copy of AssetSupplierModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AssetSupplierModelImplCopyWith<_$AssetSupplierModelImpl> get copyWith =>
+      __$$AssetSupplierModelImplCopyWithImpl<_$AssetSupplierModelImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AssetSupplierModelImplToJson(this);
+  }
+}
+
+abstract class _AssetSupplierModel implements AssetSupplierModel {
+  const factory _AssetSupplierModel({
+    required final int id,
+    required final String name,
+  }) = _$AssetSupplierModelImpl;
+
+  factory _AssetSupplierModel.fromJson(Map<String, dynamic> json) =
+      _$AssetSupplierModelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get name;
+
+  /// Create a copy of AssetSupplierModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AssetSupplierModelImplCopyWith<_$AssetSupplierModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 AssetModel _$AssetModelFromJson(Map<String, dynamic> json) {
   return _AssetModel.fromJson(json);
 }
@@ -415,6 +586,9 @@ mixin _$AssetModel {
   String get status => throw _privateConstructorUsedError;
   AssetTypeModel get assetType => throw _privateConstructorUsedError;
   AssetLocationModel? get location => throw _privateConstructorUsedError;
+  AssetSupplierModel? get supplier => throw _privateConstructorUsedError;
+  String? get brand => throw _privateConstructorUsedError;
+  String? get model => throw _privateConstructorUsedError;
   String get purchaseDate => throw _privateConstructorUsedError;
   String? get warrantyEnd => throw _privateConstructorUsedError;
 
@@ -442,12 +616,16 @@ abstract class $AssetModelCopyWith<$Res> {
     String status,
     AssetTypeModel assetType,
     AssetLocationModel? location,
+    AssetSupplierModel? supplier,
+    String? brand,
+    String? model,
     String purchaseDate,
     String? warrantyEnd,
   });
 
   $AssetTypeModelCopyWith<$Res> get assetType;
   $AssetLocationModelCopyWith<$Res>? get location;
+  $AssetSupplierModelCopyWith<$Res>? get supplier;
 }
 
 /// @nodoc
@@ -471,6 +649,9 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
     Object? status = null,
     Object? assetType = null,
     Object? location = freezed,
+    Object? supplier = freezed,
+    Object? brand = freezed,
+    Object? model = freezed,
     Object? purchaseDate = null,
     Object? warrantyEnd = freezed,
   }) {
@@ -500,6 +681,18 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
                 ? _value.location
                 : location // ignore: cast_nullable_to_non_nullable
                       as AssetLocationModel?,
+            supplier: freezed == supplier
+                ? _value.supplier
+                : supplier // ignore: cast_nullable_to_non_nullable
+                      as AssetSupplierModel?,
+            brand: freezed == brand
+                ? _value.brand
+                : brand // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            model: freezed == model
+                ? _value.model
+                : model // ignore: cast_nullable_to_non_nullable
+                      as String?,
             purchaseDate: null == purchaseDate
                 ? _value.purchaseDate
                 : purchaseDate // ignore: cast_nullable_to_non_nullable
@@ -536,6 +729,20 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
       return _then(_value.copyWith(location: value) as $Val);
     });
   }
+
+  /// Create a copy of AssetModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AssetSupplierModelCopyWith<$Res>? get supplier {
+    if (_value.supplier == null) {
+      return null;
+    }
+
+    return $AssetSupplierModelCopyWith<$Res>(_value.supplier!, (value) {
+      return _then(_value.copyWith(supplier: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -554,6 +761,9 @@ abstract class _$$AssetModelImplCopyWith<$Res>
     String status,
     AssetTypeModel assetType,
     AssetLocationModel? location,
+    AssetSupplierModel? supplier,
+    String? brand,
+    String? model,
     String purchaseDate,
     String? warrantyEnd,
   });
@@ -562,6 +772,8 @@ abstract class _$$AssetModelImplCopyWith<$Res>
   $AssetTypeModelCopyWith<$Res> get assetType;
   @override
   $AssetLocationModelCopyWith<$Res>? get location;
+  @override
+  $AssetSupplierModelCopyWith<$Res>? get supplier;
 }
 
 /// @nodoc
@@ -584,6 +796,9 @@ class __$$AssetModelImplCopyWithImpl<$Res>
     Object? status = null,
     Object? assetType = null,
     Object? location = freezed,
+    Object? supplier = freezed,
+    Object? brand = freezed,
+    Object? model = freezed,
     Object? purchaseDate = null,
     Object? warrantyEnd = freezed,
   }) {
@@ -613,6 +828,18 @@ class __$$AssetModelImplCopyWithImpl<$Res>
             ? _value.location
             : location // ignore: cast_nullable_to_non_nullable
                   as AssetLocationModel?,
+        supplier: freezed == supplier
+            ? _value.supplier
+            : supplier // ignore: cast_nullable_to_non_nullable
+                  as AssetSupplierModel?,
+        brand: freezed == brand
+            ? _value.brand
+            : brand // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        model: freezed == model
+            ? _value.model
+            : model // ignore: cast_nullable_to_non_nullable
+                  as String?,
         purchaseDate: null == purchaseDate
             ? _value.purchaseDate
             : purchaseDate // ignore: cast_nullable_to_non_nullable
@@ -636,6 +863,9 @@ class _$AssetModelImpl implements _AssetModel {
     required this.status,
     required this.assetType,
     this.location,
+    this.supplier,
+    this.brand,
+    this.model,
     required this.purchaseDate,
     this.warrantyEnd,
   });
@@ -656,13 +886,19 @@ class _$AssetModelImpl implements _AssetModel {
   @override
   final AssetLocationModel? location;
   @override
+  final AssetSupplierModel? supplier;
+  @override
+  final String? brand;
+  @override
+  final String? model;
+  @override
   final String purchaseDate;
   @override
   final String? warrantyEnd;
 
   @override
   String toString() {
-    return 'AssetModel(id: $id, name: $name, serialNumber: $serialNumber, status: $status, assetType: $assetType, location: $location, purchaseDate: $purchaseDate, warrantyEnd: $warrantyEnd)';
+    return 'AssetModel(id: $id, name: $name, serialNumber: $serialNumber, status: $status, assetType: $assetType, location: $location, supplier: $supplier, brand: $brand, model: $model, purchaseDate: $purchaseDate, warrantyEnd: $warrantyEnd)';
   }
 
   @override
@@ -679,6 +915,10 @@ class _$AssetModelImpl implements _AssetModel {
                 other.assetType == assetType) &&
             (identical(other.location, location) ||
                 other.location == location) &&
+            (identical(other.supplier, supplier) ||
+                other.supplier == supplier) &&
+            (identical(other.brand, brand) || other.brand == brand) &&
+            (identical(other.model, model) || other.model == model) &&
             (identical(other.purchaseDate, purchaseDate) ||
                 other.purchaseDate == purchaseDate) &&
             (identical(other.warrantyEnd, warrantyEnd) ||
@@ -695,6 +935,9 @@ class _$AssetModelImpl implements _AssetModel {
     status,
     assetType,
     location,
+    supplier,
+    brand,
+    model,
     purchaseDate,
     warrantyEnd,
   );
@@ -721,6 +964,9 @@ abstract class _AssetModel implements AssetModel {
     required final String status,
     required final AssetTypeModel assetType,
     final AssetLocationModel? location,
+    final AssetSupplierModel? supplier,
+    final String? brand,
+    final String? model,
     required final String purchaseDate,
     final String? warrantyEnd,
   }) = _$AssetModelImpl;
@@ -740,6 +986,12 @@ abstract class _AssetModel implements AssetModel {
   AssetTypeModel get assetType;
   @override
   AssetLocationModel? get location;
+  @override
+  AssetSupplierModel? get supplier;
+  @override
+  String? get brand;
+  @override
+  String? get model;
   @override
   String get purchaseDate;
   @override

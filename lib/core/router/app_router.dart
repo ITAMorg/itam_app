@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/assets/presentation/pages/assets_list_page.dart';
+import '../../features/assets/presentation/pages/asset_detail_page.dart';
 import '../../core/widgets/app_shell.dart';
 
 part 'app_router.g.dart';
@@ -28,6 +29,12 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/assets/:id', 
+        builder: (context, state) => AssetDetailPage(
+          assetId: state.pathParameters['id']!,
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
