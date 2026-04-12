@@ -20,7 +20,7 @@ class DetailTopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.surface,
       elevation: 0,
       scrolledUnderElevation: 0,
       leading: GestureDetector(
