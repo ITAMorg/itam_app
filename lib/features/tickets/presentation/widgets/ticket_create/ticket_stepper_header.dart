@@ -36,25 +36,11 @@ class TicketStepperHeader extends StatelessWidget {
             }),
           ),
           const SizedBox(height: 10),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            transitionBuilder: (child, animation) => FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0.05, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              ),
-            ),
-            child: Text(
-              'Étape ${currentStep + 1} sur ${stepLabels.length} — ${stepLabels[currentStep]}',
-              key: ValueKey(currentStep),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-            ),
+          Text(
+            'Étape ${currentStep + 1} sur ${stepLabels.length} — ${stepLabels[currentStep]}',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
           ),
           const SizedBox(height: 16),
         ],
