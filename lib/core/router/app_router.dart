@@ -5,6 +5,7 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/assets/presentation/pages/assets_list_page.dart';
 import '../../features/assets/presentation/pages/asset_detail_page.dart';
+import '../../features/tickets/presentation/pages/ticket_list_page.dart';
 import '../../core/widgets/app_shell.dart';
 
 part 'app_router.g.dart';
@@ -58,16 +59,14 @@ GoRouter appRouter(Ref ref) {
           //     ),
           //   ],
           // ),
-          // StatefulShellBranch(
-          //   routes: [
-          //     GoRoute(
-          //       path: '/tickets',
-          //       builder: (context, state) => const Scaffold(
-          //         body: Center(child: Text('Tickets')),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/tickets',
+                builder: (context, state) => const TicketListPage(),
+              ),
+            ],
+          ),
         ],
       ),
     ],

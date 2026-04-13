@@ -52,7 +52,7 @@ _$AssetModelImpl _$$AssetModelImplFromJson(
   name: json['name'] as String,
   serialNumber: json['serialNumber'] as String,
   status: json['status'] as String,
-  assetType: AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),
+  assetType: AssetTypeModel.fromJson(json['assetType'] as Map<String, dynamic>),
   location: json['location'] == null
       ? null
       : AssetLocationModel.fromJson(json['location'] as Map<String, dynamic>),
