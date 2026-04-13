@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itam_app/core/widgets/detail_top_bar.dart';
 import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:itam_app/features/tickets/presentation/providers/ticket_detail_provider.dart';
-import 'package:itam_app/features/tickets/presentation/widgets/ticket_header_card.dart';
-import 'package:itam_app/features/tickets/presentation/widgets/ticket_asset_section.dart';
-import 'package:itam_app/features/tickets/presentation/widgets/ticket_assignee_section.dart';
-import 'package:itam_app/features/tickets/presentation/widgets/ticket_actions_section.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/ticket_header_card.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/ticket_asset_section.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/ticket_assignee_section.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/ticket_actions_section.dart';
 import 'package:itam_app/core/widgets/action_button.dart';
 
 class TicketDetailPage extends ConsumerWidget {

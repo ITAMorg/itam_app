@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:itam_app/core/widgets/detail_top_bar.dart';
 import 'package:itam_app/core/widgets/action_button.dart';
 import 'package:itam_app/features/assets/presentation/providers/asset_detail_provider.dart';
@@ -41,7 +42,7 @@ class AssetDetailPage extends ConsumerWidget {
               label: 'Signaler un incident',
               color: Colors.red,
               icon: Icons.warning_amber_rounded,
-              onPressed: null, // TODO: implémenter
+              onPressed: () => context.go('/tickets/create?assetId=$assetId'),
             ),
           ),
         ),

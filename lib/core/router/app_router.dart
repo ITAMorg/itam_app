@@ -7,7 +7,7 @@ import '../../features/assets/presentation/pages/assets_list_page.dart';
 import '../../features/assets/presentation/pages/asset_detail_page.dart';
 import '../../features/tickets/presentation/pages/ticket_list_page.dart';
 import '../../features/tickets/presentation/pages/ticket_detail_page.dart';
-import '../../features/tickets/presentation/pages/create_ticket_page.dart';
+import '../../features/tickets/presentation/pages/ticket_create_page.dart';
 import '../../core/widgets/app_shell.dart';
 
 part 'app_router.g.dart';
@@ -40,17 +40,17 @@ GoRouter appRouter(Ref ref) {
         ),
       ),
       GoRoute(
-        path: '/tickets/:id',
-        builder: (context, state) => TicketDetailPage(
-          ticketId: int.parse(state.pathParameters['id']!),
-        ),
-      ),
-      GoRoute(
         path: '/tickets/create',
         builder: (context, state) => CreateTicketPage(
           assetId: state.uri.queryParameters['assetId'] != null
               ? int.parse(state.uri.queryParameters['assetId']!)
               : null,
+        ),
+      ),
+      GoRoute(
+        path: '/tickets/:id',
+        builder: (context, state) => TicketDetailPage(
+          ticketId: int.parse(state.pathParameters['id']!),
         ),
       ),
       StatefulShellRoute.indexedStack(
