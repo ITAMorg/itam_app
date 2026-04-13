@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:itam_app/core/theme/app_theme.dart';
+import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
+
+class TicketAssetSection extends StatelessWidget {
+  final TicketAsset? asset;
+
+  const TicketAssetSection({super.key, required this.asset});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header section
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+            child: Text(
+              'MATÉRIEL CONCERNÉ',
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: AppColors.textSecondary,
+                    letterSpacing: 1.2,
+                  ),
+            ),
+          ),
+          const Divider(height: 1, color: AppColors.border),
+          // Contenu
+          if (asset == null)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Aucun matériel associé',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () => context.push('/assets/${asset!.id}'),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: AppColors.primary.withValues(alpha: 0.5)),
+                      ),
+                      child: const Icon(
+                        Icons.laptop_rounded,
+                        color: AppColors.primary,
+                        size: 22,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            asset!.name,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            [asset!.brand, asset!.model]
+                                .where((e) => e != null)
+                                .join(' · '),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.textSecondary,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}

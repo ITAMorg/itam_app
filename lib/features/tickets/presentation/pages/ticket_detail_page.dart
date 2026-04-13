@@ -3,6 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itam_app/core/widgets/detail_top_bar.dart';
 import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:itam_app/features/tickets/presentation/providers/ticket_detail_provider.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_header_card.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_asset_section.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_assignee_section.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_actions_section.dart';
+import 'package:itam_app/core/widgets/action_button.dart';
 
 class TicketDetailPage extends ConsumerWidget {
   final int ticketId;
@@ -35,8 +40,46 @@ class TicketDetailPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(ticket.title), // placeholder
+              TicketHeaderCard(ticket: ticket),
+              const SizedBox(height: 12),
+              TicketAssetSection(asset: ticket.asset),
+              const SizedBox(height: 12),
+              TicketAssigneeSection(
+                assignee: ticket.assignee,
+                canEdit: canEdit,
+              ),
+              const SizedBox(height: 12),
+              TicketActionsSection(
+                comments: ticket.comments,
+                canEdit: canEdit,
+              ),
+              const SizedBox(height: 80),
             ],
+          ),
+        ),
+      ),
+      extendBody: true,
+      bottomNavigationBar: ColoredBox(
+        color: Colors.transparent,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: ticketAsync.maybeWhen(
+              data: (ticket) => ActionButton(
+                label: 'Résolu',
+                color: Colors.green,
+                icon: Icons.check_rounded,
+                // onPressed: ticket.status == TicketStatus.resolved ||
+                //         ticket.status == TicketStatus.closed
+                //     ? null
+                //     : canEdit
+                //         ? () {
+                //             // TODO: PATCH /tickets/:id status RESOLVED
+                //           }
+                //         : null,
+              ),
+              orElse: () => const SizedBox.shrink(),
+            ),
           ),
         ),
       ),
