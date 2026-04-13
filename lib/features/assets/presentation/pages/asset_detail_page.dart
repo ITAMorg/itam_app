@@ -42,7 +42,7 @@ class AssetDetailPage extends ConsumerWidget {
               label: 'Signaler un incident',
               color: Colors.red,
               icon: Icons.warning_amber_rounded,
-              onPressed: () => context.go('/tickets/create?assetId=$assetId'),
+              onPressed: () => context.push('/tickets/create?assetId=$assetId'),
             ),
           ),
         ),
