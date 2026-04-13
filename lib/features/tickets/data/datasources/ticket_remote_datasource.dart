@@ -9,6 +9,7 @@ part 'ticket_remote_datasource.g.dart';
 abstract class TicketRemoteDataSource {
   Future<List<TicketModel>> getTickets();
   Future<TicketModel> getTicketById(int id);
+  Future<TicketModel> createTicket(Map<String, dynamic> body);
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
@@ -28,6 +29,12 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   @override
   Future<TicketModel> getTicketById(int id) async {
     final response = await _dio.get('/tickets/$id');
+    return TicketModel.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<TicketModel> createTicket(Map<String, dynamic> body) async {
+    final response = await _dio.post('/tickets', data: body);
     return TicketModel.fromJson(response.data as Map<String, dynamic>);
   }
 }

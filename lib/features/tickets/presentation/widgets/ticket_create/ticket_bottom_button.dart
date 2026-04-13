@@ -7,6 +7,7 @@ class TicketBottomButton extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onPrevious;
   final VoidCallback onSubmit;
+  final bool canProceed;
 
   const TicketBottomButton({
     super.key,
@@ -15,6 +16,7 @@ class TicketBottomButton extends StatelessWidget {
     required this.onNext,
     required this.onPrevious,
     required this.onSubmit,
+    required this.canProceed,
   });
 
   @override
@@ -52,40 +54,46 @@ class TicketBottomButton extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: isLastStep ? onSubmit : onNext,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 350),
-                curve: Curves.easeInOut,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: isLastStep ? Colors.green : AppColors.primary,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: Text(
-                        isLastStep ? 'Enregistrer' : 'Continuer',
-                        key: ValueKey(isLastStep),
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+              onTap: (isLastStep ? canProceed : canProceed) 
+                ? (isLastStep ? onSubmit : onNext) 
+                : null,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: canProceed ? 1.0 : 0.4,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 350),
+                  curve: Curves.easeInOut,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: isLastStep ? Colors.green : AppColors.primary,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: Text(
+                          isLastStep ? 'Enregistrer' : 'Continuer',
+                          key: ValueKey(isLastStep),
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: Icon(
-                        isLastStep ? Icons.check_rounded : Icons.arrow_forward_rounded,
-                        key: ValueKey(isLastStep),
-                        color: Colors.white,
-                        size: 18,
+                      const SizedBox(width: 8),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: Icon(
+                          isLastStep ? Icons.check_rounded : Icons.arrow_forward_rounded,
+                          key: ValueKey(isLastStep),
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart';
+import 'package:itam_app/features/tickets/domain/usecases/create_ticket_usecase.dart';
 import 'package:itam_app/core/widgets/detail_top_bar.dart';
+import 'package:itam_app/features/assets/domain/entities/asset.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_stepper_header.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_bottom_button.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_step1.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_step2.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_step3.dart';
 
-class CreateTicketPage extends StatefulWidget {
+class _TicketFormData {
+  Asset? asset;
+  String? title;
+  String? description;
+  String? priority;
+
+  Map<String, dynamic> toJson() => {
+        'assetId': int.parse(asset!.id),
+        'title': title,
+        'description': description,
+        'priority': priority,
+        'type': 'INCIDENT',
+      };
+}
+
+class CreateTicketPage extends ConsumerStatefulWidget {
   final int? assetId;
 
   const CreateTicketPage({super.key, this.assetId});
 
   @override
-  State<CreateTicketPage> createState() => _CreateTicketPageState();
+  ConsumerState<CreateTicketPage> createState() => _CreateTicketPageState();
 }
 
-class _CreateTicketPageState extends State<CreateTicketPage> {
+class _CreateTicketPageState extends ConsumerState<CreateTicketPage> {
   late int _currentStep;
   late final PageController _pageController;
+  final _formData = _TicketFormData();
 
   final List<String> _stepLabels = [
     'Matériel concerné',
@@ -36,7 +60,22 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
     super.dispose();
   }
 
+  bool _canProceed() {
+    switch (_currentStep) {
+      case 0:
+        return _formData.asset != null;
+      case 1:
+        return (_formData.title?.trim().isNotEmpty ?? false) &&
+            (_formData.description?.trim().isNotEmpty ?? false);
+      case 2:
+        return _formData.priority != null;
+      default:
+        return false;
+    }
+  }
+
   void _nextStep() {
+    if (!_canProceed()) return;
     if (_currentStep < 2) {
       setState(() => _currentStep++);
       _pageController.animateToPage(
@@ -58,8 +97,32 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
     }
   }
 
-  void _onSubmit() {
-    // TODO: soumettre le ticket
+  Future<void> _onSubmit() async {
+    if (!_canProceed()) return;
+
+    final authState = ref.read(authNotifierProvider);
+    final user = authState.user;
+    if (user == null) return;
+
+    final body = {
+      ..._formData.toJson(),
+      // auto-assignation si TECHNICIAN
+      if (user.role == 'TECHNICIAN') 'assigneeId': user.id,
+    };
+
+    try {
+      await ref.read(createTicketUseCaseProvider).execute(body);
+      if (mounted) context.pop();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur : $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -81,31 +144,38 @@ class _CreateTicketPageState extends State<CreateTicketPage> {
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildPlaceholderStep('Matériel concerné'),
-                _buildPlaceholderStep("Détails de l'incident"),
-                _buildPlaceholderStep('Priorité & confirmation'),
+                TicketAssetSection(
+                  preselectedAssetId: widget.assetId,
+                  onAssetSelected: (asset) {
+                    setState(() => _formData.asset = asset);
+                  },
+                ),
+                TicketActionsSection(
+                  selectedAsset: _formData.asset,
+                  initialTitle: _formData.title,
+                  initialDescription: _formData.description,
+                  onTitleChanged: (v) => setState(() => _formData.title = v),
+                  onDescriptionChanged: (v) => setState(() => _formData.description = v),
+                ),
+                TicketAssigneeSection(
+                  selectedAsset: _formData.asset,
+                  title: _formData.title,
+                  description: _formData.description,
+                  selectedPriority: _formData.priority,
+                  onPriorityChanged: (v) => setState(() => _formData.priority = v),
+                ),
               ],
             ),
           ),
           TicketBottomButton(
             isFirstStep: isFirstStep,
             isLastStep: isLastStep,
+            canProceed: _canProceed(),
             onNext: _nextStep,
             onPrevious: _previousStep,
             onSubmit: _onSubmit,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPlaceholderStep(String label) {
-    return Center(
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-            ),
       ),
     );
   }
