@@ -6,6 +6,7 @@ import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/assets/presentation/pages/assets_list_page.dart';
 import '../../features/assets/presentation/pages/asset_detail_page.dart';
 import '../../features/tickets/presentation/pages/ticket_list_page.dart';
+import '../../features/tickets/presentation/pages/ticket_detail_page.dart';
 import '../../core/widgets/app_shell.dart';
 
 part 'app_router.g.dart';
@@ -35,6 +36,12 @@ GoRouter appRouter(Ref ref) {
         path: '/assets/:id', 
         builder: (context, state) => AssetDetailPage(
           assetId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
+        path: '/tickets/:id',
+        builder: (context, state) => TicketDetailPage(
+          ticketId: int.parse(state.pathParameters['id']!),
         ),
       ),
       StatefulShellRoute.indexedStack(

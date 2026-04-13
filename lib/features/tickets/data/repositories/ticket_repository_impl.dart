@@ -17,6 +17,12 @@ class TicketRepositoryImpl implements TicketRepository {
     final models = await _datasource.getTickets();
     return models.map((m) => m.toEntity()).toList();
   }
+
+  @override
+  Future<Ticket> getTicketById(int id) async {
+    final model = await _datasource.getTicketById(id);
+    return model.toEntity();
+  }
 }
 
 @riverpod

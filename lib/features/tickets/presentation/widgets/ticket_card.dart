@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
+import 'package:go_router/go_router.dart';
 
 class TicketCard extends StatelessWidget {
   final Ticket ticket;
@@ -16,8 +17,7 @@ class TicketCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // TODO: navigation vers le détail ticket
-        // context.push('/tickets/${ticket.id}');
+        context.push('/tickets/${ticket.id}');
       },
       child: Container(
         decoration: BoxDecoration(
