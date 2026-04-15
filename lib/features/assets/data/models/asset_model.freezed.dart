@@ -574,6 +574,304 @@ abstract class _AssetSupplierModel implements AssetSupplierModel {
       throw _privateConstructorUsedError;
 }
 
+TicketSummaryModel _$TicketSummaryModelFromJson(Map<String, dynamic> json) {
+  return _TicketSummaryModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TicketSummaryModel {
+  int get id => throw _privateConstructorUsedError;
+  String get reference => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
+  String get priority => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
+
+  /// Serializes this TicketSummaryModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of TicketSummaryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TicketSummaryModelCopyWith<TicketSummaryModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TicketSummaryModelCopyWith<$Res> {
+  factory $TicketSummaryModelCopyWith(
+    TicketSummaryModel value,
+    $Res Function(TicketSummaryModel) then,
+  ) = _$TicketSummaryModelCopyWithImpl<$Res, TicketSummaryModel>;
+  @useResult
+  $Res call({
+    int id,
+    String reference,
+    String title,
+    String status,
+    String priority,
+    String type,
+    String createdAt,
+  });
+}
+
+/// @nodoc
+class _$TicketSummaryModelCopyWithImpl<$Res, $Val extends TicketSummaryModel>
+    implements $TicketSummaryModelCopyWith<$Res> {
+  _$TicketSummaryModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TicketSummaryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? reference = null,
+    Object? title = null,
+    Object? status = null,
+    Object? priority = null,
+    Object? type = null,
+    Object? createdAt = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as int,
+            reference: null == reference
+                ? _value.reference
+                : reference // ignore: cast_nullable_to_non_nullable
+                      as String,
+            title: null == title
+                ? _value.title
+                : title // ignore: cast_nullable_to_non_nullable
+                      as String,
+            status: null == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                      as String,
+            priority: null == priority
+                ? _value.priority
+                : priority // ignore: cast_nullable_to_non_nullable
+                      as String,
+            type: null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                      as String,
+            createdAt: null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$TicketSummaryModelImplCopyWith<$Res>
+    implements $TicketSummaryModelCopyWith<$Res> {
+  factory _$$TicketSummaryModelImplCopyWith(
+    _$TicketSummaryModelImpl value,
+    $Res Function(_$TicketSummaryModelImpl) then,
+  ) = __$$TicketSummaryModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    int id,
+    String reference,
+    String title,
+    String status,
+    String priority,
+    String type,
+    String createdAt,
+  });
+}
+
+/// @nodoc
+class __$$TicketSummaryModelImplCopyWithImpl<$Res>
+    extends _$TicketSummaryModelCopyWithImpl<$Res, _$TicketSummaryModelImpl>
+    implements _$$TicketSummaryModelImplCopyWith<$Res> {
+  __$$TicketSummaryModelImplCopyWithImpl(
+    _$TicketSummaryModelImpl _value,
+    $Res Function(_$TicketSummaryModelImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of TicketSummaryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? reference = null,
+    Object? title = null,
+    Object? status = null,
+    Object? priority = null,
+    Object? type = null,
+    Object? createdAt = null,
+  }) {
+    return _then(
+      _$TicketSummaryModelImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as int,
+        reference: null == reference
+            ? _value.reference
+            : reference // ignore: cast_nullable_to_non_nullable
+                  as String,
+        title: null == title
+            ? _value.title
+            : title // ignore: cast_nullable_to_non_nullable
+                  as String,
+        status: null == status
+            ? _value.status
+            : status // ignore: cast_nullable_to_non_nullable
+                  as String,
+        priority: null == priority
+            ? _value.priority
+            : priority // ignore: cast_nullable_to_non_nullable
+                  as String,
+        type: null == type
+            ? _value.type
+            : type // ignore: cast_nullable_to_non_nullable
+                  as String,
+        createdAt: null == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TicketSummaryModelImpl implements _TicketSummaryModel {
+  const _$TicketSummaryModelImpl({
+    required this.id,
+    required this.reference,
+    required this.title,
+    required this.status,
+    required this.priority,
+    required this.type,
+    required this.createdAt,
+  });
+
+  factory _$TicketSummaryModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TicketSummaryModelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String reference;
+  @override
+  final String title;
+  @override
+  final String status;
+  @override
+  final String priority;
+  @override
+  final String type;
+  @override
+  final String createdAt;
+
+  @override
+  String toString() {
+    return 'TicketSummaryModel(id: $id, reference: $reference, title: $title, status: $status, priority: $priority, type: $type, createdAt: $createdAt)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TicketSummaryModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.reference, reference) ||
+                other.reference == reference) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    reference,
+    title,
+    status,
+    priority,
+    type,
+    createdAt,
+  );
+
+  /// Create a copy of TicketSummaryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TicketSummaryModelImplCopyWith<_$TicketSummaryModelImpl> get copyWith =>
+      __$$TicketSummaryModelImplCopyWithImpl<_$TicketSummaryModelImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TicketSummaryModelImplToJson(this);
+  }
+}
+
+abstract class _TicketSummaryModel implements TicketSummaryModel {
+  const factory _TicketSummaryModel({
+    required final int id,
+    required final String reference,
+    required final String title,
+    required final String status,
+    required final String priority,
+    required final String type,
+    required final String createdAt,
+  }) = _$TicketSummaryModelImpl;
+
+  factory _TicketSummaryModel.fromJson(Map<String, dynamic> json) =
+      _$TicketSummaryModelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get reference;
+  @override
+  String get title;
+  @override
+  String get status;
+  @override
+  String get priority;
+  @override
+  String get type;
+  @override
+  String get createdAt;
+
+  /// Create a copy of TicketSummaryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TicketSummaryModelImplCopyWith<_$TicketSummaryModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 AssetModel _$AssetModelFromJson(Map<String, dynamic> json) {
   return _AssetModel.fromJson(json);
 }
@@ -591,6 +889,7 @@ mixin _$AssetModel {
   String? get model => throw _privateConstructorUsedError;
   String get purchaseDate => throw _privateConstructorUsedError;
   String? get warrantyEnd => throw _privateConstructorUsedError;
+  List<TicketSummaryModel> get tickets => throw _privateConstructorUsedError;
 
   /// Serializes this AssetModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -621,6 +920,7 @@ abstract class $AssetModelCopyWith<$Res> {
     String? model,
     String purchaseDate,
     String? warrantyEnd,
+    List<TicketSummaryModel> tickets,
   });
 
   $AssetTypeModelCopyWith<$Res> get assetType;
@@ -654,6 +954,7 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
     Object? model = freezed,
     Object? purchaseDate = null,
     Object? warrantyEnd = freezed,
+    Object? tickets = null,
   }) {
     return _then(
       _value.copyWith(
@@ -701,6 +1002,10 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
                 ? _value.warrantyEnd
                 : warrantyEnd // ignore: cast_nullable_to_non_nullable
                       as String?,
+            tickets: null == tickets
+                ? _value.tickets
+                : tickets // ignore: cast_nullable_to_non_nullable
+                      as List<TicketSummaryModel>,
           )
           as $Val,
     );
@@ -766,6 +1071,7 @@ abstract class _$$AssetModelImplCopyWith<$Res>
     String? model,
     String purchaseDate,
     String? warrantyEnd,
+    List<TicketSummaryModel> tickets,
   });
 
   @override
@@ -801,6 +1107,7 @@ class __$$AssetModelImplCopyWithImpl<$Res>
     Object? model = freezed,
     Object? purchaseDate = null,
     Object? warrantyEnd = freezed,
+    Object? tickets = null,
   }) {
     return _then(
       _$AssetModelImpl(
@@ -848,6 +1155,10 @@ class __$$AssetModelImplCopyWithImpl<$Res>
             ? _value.warrantyEnd
             : warrantyEnd // ignore: cast_nullable_to_non_nullable
                   as String?,
+        tickets: null == tickets
+            ? _value._tickets
+            : tickets // ignore: cast_nullable_to_non_nullable
+                  as List<TicketSummaryModel>,
       ),
     );
   }
@@ -868,7 +1179,8 @@ class _$AssetModelImpl implements _AssetModel {
     this.model,
     required this.purchaseDate,
     this.warrantyEnd,
-  });
+    final List<TicketSummaryModel> tickets = const [],
+  }) : _tickets = tickets;
 
   factory _$AssetModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AssetModelImplFromJson(json);
@@ -895,10 +1207,18 @@ class _$AssetModelImpl implements _AssetModel {
   final String purchaseDate;
   @override
   final String? warrantyEnd;
+  final List<TicketSummaryModel> _tickets;
+  @override
+  @JsonKey()
+  List<TicketSummaryModel> get tickets {
+    if (_tickets is EqualUnmodifiableListView) return _tickets;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tickets);
+  }
 
   @override
   String toString() {
-    return 'AssetModel(id: $id, name: $name, serialNumber: $serialNumber, status: $status, assetType: $assetType, location: $location, supplier: $supplier, brand: $brand, model: $model, purchaseDate: $purchaseDate, warrantyEnd: $warrantyEnd)';
+    return 'AssetModel(id: $id, name: $name, serialNumber: $serialNumber, status: $status, assetType: $assetType, location: $location, supplier: $supplier, brand: $brand, model: $model, purchaseDate: $purchaseDate, warrantyEnd: $warrantyEnd, tickets: $tickets)';
   }
 
   @override
@@ -922,7 +1242,8 @@ class _$AssetModelImpl implements _AssetModel {
             (identical(other.purchaseDate, purchaseDate) ||
                 other.purchaseDate == purchaseDate) &&
             (identical(other.warrantyEnd, warrantyEnd) ||
-                other.warrantyEnd == warrantyEnd));
+                other.warrantyEnd == warrantyEnd) &&
+            const DeepCollectionEquality().equals(other._tickets, _tickets));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -940,6 +1261,7 @@ class _$AssetModelImpl implements _AssetModel {
     model,
     purchaseDate,
     warrantyEnd,
+    const DeepCollectionEquality().hash(_tickets),
   );
 
   /// Create a copy of AssetModel
@@ -969,6 +1291,7 @@ abstract class _AssetModel implements AssetModel {
     final String? model,
     required final String purchaseDate,
     final String? warrantyEnd,
+    final List<TicketSummaryModel> tickets,
   }) = _$AssetModelImpl;
 
   factory _AssetModel.fromJson(Map<String, dynamic> json) =
@@ -996,6 +1319,8 @@ abstract class _AssetModel implements AssetModel {
   String get purchaseDate;
   @override
   String? get warrantyEnd;
+  @override
+  List<TicketSummaryModel> get tickets;
 
   /// Create a copy of AssetModel
   /// with the given fields replaced by the non-null parameter values.

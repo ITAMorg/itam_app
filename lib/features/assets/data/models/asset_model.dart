@@ -40,6 +40,22 @@ class AssetSupplierModel with _$AssetSupplierModel {
 }
 
 @freezed
+class TicketSummaryModel with _$TicketSummaryModel {
+  const factory TicketSummaryModel({
+    required int id,
+    required String reference,
+    required String title,
+    required String status,
+    required String priority,
+    required String type,
+    required String createdAt,
+  }) = _TicketSummaryModel;
+
+  factory TicketSummaryModel.fromJson(Map<String, dynamic> json) =>
+      _$TicketSummaryModelFromJson(json);
+}
+
+@freezed
 class AssetModel with _$AssetModel {
   const factory AssetModel({
     required int id,
@@ -53,21 +69,34 @@ class AssetModel with _$AssetModel {
     String? model,
     required String purchaseDate,
     String? warrantyEnd,
+    @Default([]) List<TicketSummaryModel> tickets,
   }) = _AssetModel;
 
-  factory AssetModel.fromJson(Map<String, dynamic> json) =>
-    AssetModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      serialNumber: json['serialNumber'] as String,
-      status: json['status'] as String,
-      assetType: AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),
-      location: json['location'] == null
-          ? null
-          : AssetLocationModel.fromJson(json['location'] as Map<String, dynamic>),
-      purchaseDate: json['purchaseDate'] as String,
-      warrantyEnd: json['warrantyEnd'] as String?,
-    );
+  factory AssetModel.fromJson(Map<String, dynamic> json) => AssetModel(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        serialNumber: json['serialNumber'] as String,
+        status: json['status'] as String,
+        assetType:
+            AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),
+        location: json['location'] == null
+            ? null
+            : AssetLocationModel.fromJson(
+                json['location'] as Map<String, dynamic>),
+        supplier: json['supplier'] == null
+            ? null
+            : AssetSupplierModel.fromJson(
+                json['supplier'] as Map<String, dynamic>),
+        brand: json['brand'] as String?,
+        model: json['model'] as String?,
+        purchaseDate: json['purchaseDate'] as String,
+        warrantyEnd: json['warrantyEnd'] as String?,
+        tickets: (json['tickets'] as List<dynamic>?)
+                ?.map((e) =>
+                    TicketSummaryModel.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            [],
+      );
 }
 
 extension AssetModelMapper on AssetModel {
@@ -93,6 +122,17 @@ extension AssetModelMapper on AssetModel {
       model: model,
       purchaseDate: DateTime.parse(purchaseDate),
       warrantyEnd: warrantyEnd != null ? DateTime.parse(warrantyEnd!) : null,
+      tickets: tickets
+          .map((t) => TicketSummary(
+                id: t.id,
+                reference: t.reference,
+                title: t.title,
+                status: t.status,
+                priority: t.priority,
+                type: t.type,
+                createdAt: DateTime.parse(t.createdAt),
+              ))
+          .toList(),
     );
   }
 
@@ -104,6 +144,8 @@ extension AssetModelMapper on AssetModel {
         return AssetStatus.broken;
       case 'IN_STOCK':
         return AssetStatus.inStock;
+      case 'MAINTENANCE':
+        return AssetStatus.maintenance;
       default:
         return AssetStatus.inStock;
     }

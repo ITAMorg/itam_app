@@ -12,8 +12,13 @@ import 'package:itam_app/features/assets/presentation/widgets/asset_history_sect
 
 class AssetDetailPage extends ConsumerWidget {
   final String assetId;
+  final bool fromTicket;
 
-  const AssetDetailPage({super.key, required this.assetId});
+  const AssetDetailPage({
+    super.key,
+    required this.assetId,
+    this.fromTicket = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,25 +38,41 @@ class AssetDetailPage extends ConsumerWidget {
           // TODO: dialog confirmation suppression
         } : null,
       ),
-      bottomNavigationBar: ColoredBox(
-        color: Colors.transparent,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: ActionButton(
-              label: 'Signaler un incident',
-              color: Colors.red,
-              icon: Icons.warning_amber_rounded,
-              onPressed: () => context.push('/tickets/create?assetId=$assetId'),
+      bottomNavigationBar: assetAsync.whenOrNull(
+        data: (asset) {
+          // Masqué si on vient d'un ticket
+          if (fromTicket) return const SizedBox.shrink();
+
+          final activeTicket = asset.activeTicket;
+
+          return ColoredBox(
+            color: Colors.transparent,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: activeTicket != null
+                    ? ActionButton(
+                        label: 'Voir le ticket en cours',
+                        color: const Color(0xFF1D4ED8),
+                        icon: Icons.confirmation_number_rounded,
+                        onPressed: () =>
+                            context.push('/tickets/${activeTicket.id}'),
+                      )
+                    : ActionButton(
+                        label: 'Signaler un incident',
+                        color: Colors.red,
+                        icon: Icons.warning_amber_rounded,
+                        onPressed: () => context.push(
+                            '/tickets/create?assetId=$assetId'),
+                      ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
       body: assetAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(
-          child: Text('Erreur : $e'),
-        ),
+        error: (e, _) => Center(child: Text('Erreur : $e')),
         data: (asset) => SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -61,12 +82,9 @@ class AssetDetailPage extends ConsumerWidget {
               const SizedBox(height: 12),
               AssetInfoSection(asset: asset),
               const SizedBox(height: 12),
-              AssetAffectationSection(
-                asset: asset,
-                canEdit: canEdit,
-              ),
+              AssetAffectationSection(asset: asset, canEdit: canEdit),
               const SizedBox(height: 12),
-              AssetHistorySection(),
+              AssetHistorySection(asset: asset),
               const SizedBox(height: 80),
             ],
           ),

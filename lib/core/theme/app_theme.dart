@@ -18,11 +18,13 @@ class AppColors {
 class AssetStatusColors {
   final Color inService;
   final Color broken;
+  final Color maintenance;
   final Color inStock;
 
   const AssetStatusColors({
     required this.inService,
     required this.broken,
+    required this.maintenance,
     required this.inStock,
   });
 }
@@ -168,6 +170,7 @@ class AppTheme {
         statusColors: AssetStatusColors(
           inService: Color(0xFF2E7D32),
           broken: Color(0xFFCF2A2D),
+          maintenance: Colors.orange,
           inStock: Color(0xFFE1E1E1),
         ),
       ),

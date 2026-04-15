@@ -45,6 +45,30 @@ Map<String, dynamic> _$$AssetSupplierModelImplToJson(
   _$AssetSupplierModelImpl instance,
 ) => <String, dynamic>{'id': instance.id, 'name': instance.name};
 
+_$TicketSummaryModelImpl _$$TicketSummaryModelImplFromJson(
+  Map<String, dynamic> json,
+) => _$TicketSummaryModelImpl(
+  id: (json['id'] as num).toInt(),
+  reference: json['reference'] as String,
+  title: json['title'] as String,
+  status: json['status'] as String,
+  priority: json['priority'] as String,
+  type: json['type'] as String,
+  createdAt: json['createdAt'] as String,
+);
+
+Map<String, dynamic> _$$TicketSummaryModelImplToJson(
+  _$TicketSummaryModelImpl instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'reference': instance.reference,
+  'title': instance.title,
+  'status': instance.status,
+  'priority': instance.priority,
+  'type': instance.type,
+  'createdAt': instance.createdAt,
+};
+
 _$AssetModelImpl _$$AssetModelImplFromJson(
   Map<String, dynamic> json,
 ) => _$AssetModelImpl(
@@ -63,6 +87,11 @@ _$AssetModelImpl _$$AssetModelImplFromJson(
   model: json['model'] as String?,
   purchaseDate: json['purchaseDate'] as String,
   warrantyEnd: json['warrantyEnd'] as String?,
+  tickets:
+      (json['tickets'] as List<dynamic>?)
+          ?.map((e) => TicketSummaryModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$$AssetModelImplToJson(_$AssetModelImpl instance) =>
@@ -78,4 +107,5 @@ Map<String, dynamic> _$$AssetModelImplToJson(_$AssetModelImpl instance) =>
       'model': instance.model,
       'purchaseDate': instance.purchaseDate,
       'warrantyEnd': instance.warrantyEnd,
+      'tickets': instance.tickets,
     };

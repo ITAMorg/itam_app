@@ -19,12 +19,14 @@ class AssetCard extends StatelessWidget {
     final statusColor = switch (asset.status) {
       AssetStatus.inService => statusColors.inService,
       AssetStatus.broken => statusColors.broken,
+      AssetStatus.maintenance => statusColors.maintenance,
       AssetStatus.inStock => statusColors.inStock,
     };
 
     final statusLabel = switch (asset.status) {
       AssetStatus.inService => 'En service',
       AssetStatus.broken => 'En panne',
+      AssetStatus.maintenance => 'maintenance',
       AssetStatus.inStock => 'En stock',
     };
 
