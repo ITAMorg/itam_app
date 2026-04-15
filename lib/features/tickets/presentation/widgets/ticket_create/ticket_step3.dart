@@ -94,7 +94,7 @@ class TicketAssigneeSection extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: AppColors.background.withOpacity(0.6),
+              color: AppColors.background.withValues(alpha: 0.6),
               width: 1,
             ),
           ),
@@ -180,7 +180,7 @@ class TicketAssigneeSection extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: AppColors.background.withOpacity(0.6),
+            color: AppColors.background.withValues(alpha: 0.6),
             width: 1,
           ),
         ),
@@ -237,7 +237,7 @@ class TicketAssigneeSection extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: AppColors.background.withOpacity(0.6),
+            color: AppColors.background.withValues(alpha: 0.6),
             width: 1,
           ),
         ),
