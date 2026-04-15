@@ -93,15 +93,18 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
                 );
               }
 
-              return ListView.separated(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: 8,
+              return RefreshIndicator(
+                onRefresh: () => ref.read(assetsProvider.notifier).refresh(),
+                child: ListView.separated(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: 8,
+                  ),
+                  itemCount: filtered.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) =>
+                      AssetCard(asset: filtered[index]),
                 ),
-                itemCount: filtered.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, index) =>
-                    AssetCard(asset: filtered[index]),
               );
             },
           ),

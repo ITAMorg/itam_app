@@ -26,6 +26,11 @@ class AssetsNotifier extends AsyncNotifier<List<Asset>> {
 
     return await useCase.call();
   }
+
+  Future<void> refresh() async {
+    ref.invalidateSelf();
+    await future;
+  }
 }
 
 final assetsProvider = AsyncNotifierProvider<AssetsNotifier, List<Asset>>(
