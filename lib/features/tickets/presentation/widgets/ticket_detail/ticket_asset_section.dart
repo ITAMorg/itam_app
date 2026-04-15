@@ -31,7 +31,6 @@ class TicketAssetSection extends StatelessWidget {
             ),
           ),
           const Divider(height: 1, color: AppColors.border),
-          // Contenu
           if (asset == null)
             Padding(
               padding: const EdgeInsets.all(16),
@@ -44,7 +43,7 @@ class TicketAssetSection extends StatelessWidget {
             )
           else
             GestureDetector(
-              onTap: () => context.push('/assets/${asset!.id}'),
+              onTap: () => context.push('/assets/${asset!.id}?fromTicket=true'),
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(

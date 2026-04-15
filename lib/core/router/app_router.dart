@@ -36,9 +36,10 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: '/assets/:id', 
+        path: '/assets/:id',
         builder: (context, state) => AssetDetailPage(
           assetId: state.pathParameters['id']!,
+          fromTicket: state.uri.queryParameters['fromTicket'] == 'true',
         ),
       ),
       GoRoute(
