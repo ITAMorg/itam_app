@@ -8,6 +8,8 @@ import '../../features/assets/presentation/pages/asset_detail_page.dart';
 import '../../features/tickets/presentation/pages/ticket_list_page.dart';
 import '../../features/tickets/presentation/pages/ticket_detail_page.dart';
 import '../../features/tickets/presentation/pages/ticket_create_page.dart';
+import '../../features/qrcode/asset_qr_page.dart';
+import '../../features/qrcode/qr_scanner_page.dart';
 import '../../core/widgets/app_shell.dart';
 
 part 'app_router.g.dart';
@@ -40,6 +42,16 @@ GoRouter appRouter(Ref ref) {
         ),
       ),
       GoRoute(
+        path: '/scanner',
+        builder: (context, state) => const QrScannerPage(),
+      ),
+      GoRoute(
+        path: '/assets/:id/qrcode',
+        builder: (context, state) => AssetQrCodePage(
+          assetId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
         path: '/tickets/create',
         builder: (context, state) => CreateTicketPage(
           assetId: state.uri.queryParameters['assetId'] != null
@@ -65,16 +77,6 @@ GoRouter appRouter(Ref ref) {
               ),
             ],
           ),
-          // StatefulShellBranch(
-          //   routes: [
-          //     GoRoute(
-          //       path: '/scanner',
-          //       builder: (context, state) => const Scaffold(
-          //         body: Center(child: Text('Scanner')),
-          //       ),
-          //     ),
-          //   ],
-          // ),
           StatefulShellBranch(
             routes: [
               GoRoute(

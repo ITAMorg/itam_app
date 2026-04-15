@@ -31,6 +31,16 @@ dependencies:
   equatable: ^2.0.7
   intl: ^0.20.1
   dart_jsonwebtoken: ^2.14.0
+  path_provider: ^2.1.4
+
+  # Qr code
+  mobile_scanner: ^6.0.0
+  image_picker: ^1.1.2
+  file_picker: ^8.1.2
+  share_plus: ^10.0.0
+  printing: ^5.13.1
+  gal: ^2.3.0
+  flutter_zxing: ^1.8.0
 
 dev_dependencies:
   flutter_test:

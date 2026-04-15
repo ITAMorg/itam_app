@@ -14,11 +14,20 @@ class AppShell extends StatelessWidget {
       appBar: const AppTopBar(),
       body: navigationShell,
       bottomNavigationBar: AppBottomBar(
-        currentIndex: navigationShell.currentIndex,
-        onTap: (index) => navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
-        ),
+        currentIndex: navigationShell.currentIndex == 1 
+            ? 2  // branch 1 (tickets) → onglet 2
+            : navigationShell.currentIndex, // branch 0 (assets) → onglet 0
+        onTap: (index) {
+          if (index == 1) {
+            context.push('/scanner');
+            return;
+          }
+          final branchIndex = index > 1 ? index - 1 : index;
+          navigationShell.goBranch(
+            branchIndex,
+            initialLocation: branchIndex == navigationShell.currentIndex,
+          );
+        },
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/core/utils/color_resolver.dart';
 import 'package:itam_app/core/utils/icon_resolver.dart';
@@ -41,11 +42,9 @@ class AssetHeaderCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Icône + nom + QR code
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icône type
               Container(
                 width: 56,
                 height: 56,
@@ -57,7 +56,6 @@ class AssetHeaderCard extends StatelessWidget {
                 child: Icon(iconData, color: Colors.white, size: 28),
               ),
               const SizedBox(width: 14),
-              // Nom + type + location
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,19 +80,21 @@ class AssetHeaderCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // QR code placeholder
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
-                ),
-                child: const Icon(
-                  Icons.qr_code_rounded,
-                  color: AppColors.textSecondary,
-                  size: 24,
+              GestureDetector(
+                onTap: () => context.push('/assets/${ asset.id}/qrcode'),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.background,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+                  ),
+                  child: const Icon(
+                    Icons.qr_code_rounded,
+                    color: AppColors.textSecondary,
+                    size: 24,
+                  ),
                 ),
               ),
             ],
