@@ -28,7 +28,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
   }
 
   void _handleBarcode(String raw) {
-    print('handleBarcode: $raw');
     if (_handled) return;
     _handled = true;
 
