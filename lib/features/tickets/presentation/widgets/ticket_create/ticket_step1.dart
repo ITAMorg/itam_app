@@ -56,18 +56,6 @@ class _TicketAssetSectionState extends ConsumerState<TicketAssetSection> {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (e, _) => Center(child: Text('Erreur : $e')),
             data: (assets) {
-              if (widget.preselectedAssetId != null && _selectedAsset == null) {
-                final match = assets.where(
-                  (a) => a.id == widget.preselectedAssetId.toString(),
-                ).firstOrNull;
-                if (match != null) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    setState(() => _selectedAsset = match);
-                    widget.onAssetSelected(match);
-                  });
-                }
-              }
-
               final filtered = assets.where((a) {
                 final q = _searchQuery.toLowerCase();
                 return a.name.toLowerCase().contains(q) ||

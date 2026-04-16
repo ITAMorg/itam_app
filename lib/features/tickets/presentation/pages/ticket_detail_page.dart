@@ -8,6 +8,7 @@ import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/tic
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/ticket_assignee_section.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_detail/ticket_actions_section.dart';
 import 'package:itam_app/core/widgets/action_button.dart';
+import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 
 class TicketDetailPage extends ConsumerWidget {
   final int ticketId;
@@ -50,6 +51,7 @@ class TicketDetailPage extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               TicketActionsSection(
+                ticketId: ticketId,
                 comments: ticket.comments,
                 canEdit: canEdit,
               ),
@@ -65,19 +67,24 @@ class TicketDetailPage extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: ticketAsync.maybeWhen(
-              data: (ticket) => ActionButton(
-                label: 'Résolu',
-                color: Colors.green,
-                icon: Icons.check_rounded,
-                // onPressed: ticket.status == TicketStatus.resolved ||
-                //         ticket.status == TicketStatus.closed
-                //     ? null
-                //     : canEdit
-                //         ? () {
-                //             // TODO: PATCH /tickets/:id status RESOLVED
-                //           }
-                //         : null,
-              ),
+              data: (ticket) {
+                final isResolved = ticket.status == TicketStatus.resolved ||
+                    ticket.status == TicketStatus.closed;
+                final hasComments = ticket.comments.isNotEmpty;
+
+                return ActionButton(
+                  label: 'Résolu',
+                  color: Colors.green,
+                  icon: Icons.check_rounded,
+                  onPressed: !isResolved && hasComments && canEdit
+                      ? () async {
+                          await ref
+                              .read(ticketDetailProvider(ticketId).notifier)
+                              .resolve();
+                        }
+                      : null,
+                );
+              },
               orElse: () => const SizedBox.shrink(),
             ),
           ),

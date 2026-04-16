@@ -10,6 +10,8 @@ abstract class TicketRemoteDataSource {
   Future<List<TicketModel>> getTickets();
   Future<TicketModel> getTicketById(int id);
   Future<TicketModel> createTicket(Map<String, dynamic> body);
+  Future<void> addComment(int ticketId, String content);
+  Future<TicketModel> updateTicketStatus(int ticketId, String status);
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
@@ -35,6 +37,20 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   @override
   Future<TicketModel> createTicket(Map<String, dynamic> body) async {
     final response = await _dio.post('/tickets', data: body);
+    return TicketModel.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<void> addComment(int ticketId, String content) async {
+    await _dio.post('/tickets/$ticketId/actions', data: {'content': content});
+  }
+
+  @override
+  Future<TicketModel> updateTicketStatus(int ticketId, String status) async {
+    final response = await _dio.patch(
+      '/tickets/$ticketId',
+      data: {'status': status},
+    );
     return TicketModel.fromJson(response.data as Map<String, dynamic>);
   }
 }

@@ -6,6 +6,7 @@ import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart
 import 'package:itam_app/features/tickets/domain/usecases/create_ticket_usecase.dart';
 import 'package:itam_app/core/widgets/detail_top_bar.dart';
 import 'package:itam_app/features/assets/domain/entities/asset.dart';
+import 'package:itam_app/features/assets/presentation/providers/assets_provider.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_stepper_header.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_bottom_button.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_create/ticket_step1.dart';
@@ -52,6 +53,21 @@ class _CreateTicketPageState extends ConsumerState<CreateTicketPage> {
     super.initState();
     _currentStep = widget.assetId != null ? 1 : 0;
     _pageController = PageController(initialPage: _currentStep);
+
+    // Pré-sélection de l'asset si assetId fourni
+    if (widget.assetId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final assetsAsync = ref.read(assetsProvider);
+        assetsAsync.whenData((assets) {
+          final match = assets.where(
+            (a) => a.id == widget.assetId.toString(),
+          ).firstOrNull;
+          if (match != null) {
+            setState(() => _formData.asset = match);
+          }
+        });
+      });
+    }
   }
 
   @override

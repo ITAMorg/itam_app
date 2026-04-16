@@ -29,6 +29,17 @@ class TicketRepositoryImpl implements TicketRepository {
     final model = await _datasource.createTicket(body);
     return model.toEntity();
   }
+
+  @override
+  Future<void> addComment(int ticketId, String content) async {
+    await _datasource.addComment(ticketId, content);
+  }
+
+  @override
+  Future<Ticket> updateTicketStatus(int ticketId, String status) async {
+    final model = await _datasource.updateTicketStatus(ticketId, status);
+    return model.toEntity();
+  }
 }
 
 @riverpod
