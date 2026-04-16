@@ -10,7 +10,7 @@ import 'package:itam_app/features/assets/presentation/widgets/asset_info_section
 import 'package:itam_app/features/assets/presentation/widgets/asset_affectation_section.dart';
 import 'package:itam_app/features/assets/presentation/widgets/asset_history_section.dart';
 
-class AssetDetailPage extends ConsumerWidget {
+class AssetDetailPage extends ConsumerStatefulWidget {
   final String assetId;
   final bool fromTicket;
 
@@ -21,8 +21,14 @@ class AssetDetailPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final assetAsync = ref.watch(assetDetailProvider(assetId));
+  ConsumerState<AssetDetailPage> createState() => _AssetDetailPageState();
+}
+
+class _AssetDetailPageState extends ConsumerState<AssetDetailPage> {
+
+  @override
+  Widget build(BuildContext context) {
+    final assetAsync = ref.watch(assetDetailProvider(widget.assetId));
     final authState = ref.watch(authNotifierProvider);
     final isAdmin = authState.user?.role == 'ADMIN';
     final canEdit = isAdmin || authState.user?.role == 'TECHNICIAN';
@@ -41,7 +47,7 @@ class AssetDetailPage extends ConsumerWidget {
       bottomNavigationBar: assetAsync.whenOrNull(
         data: (asset) {
           // Masqué si on vient d'un ticket
-          if (fromTicket) return const SizedBox.shrink();
+          if (widget.fromTicket) return const SizedBox.shrink();
 
           final activeTicket = asset.activeTicket;
 
@@ -63,7 +69,7 @@ class AssetDetailPage extends ConsumerWidget {
                         color: Colors.red,
                         icon: Icons.warning_amber_rounded,
                         onPressed: () => context.push(
-                            '/tickets/create?assetId=$assetId'),
+                            '/tickets/create?assetId=${widget.assetId}'),
                       ),
               ),
             ),
@@ -73,20 +79,24 @@ class AssetDetailPage extends ConsumerWidget {
       body: assetAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erreur : $e')),
-        data: (asset) => SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AssetHeaderCard(asset: asset),
-              const SizedBox(height: 12),
-              AssetInfoSection(asset: asset),
-              const SizedBox(height: 12),
-              AssetAffectationSection(asset: asset, canEdit: canEdit),
-              const SizedBox(height: 12),
-              AssetHistorySection(asset: asset),
-              const SizedBox(height: 80),
-            ],
+        data: (asset) => RefreshIndicator(
+          onRefresh: () => ref.read(assetDetailProvider(widget.assetId).notifier).refresh(),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AssetHeaderCard(asset: asset),
+                const SizedBox(height: 12),
+                AssetInfoSection(asset: asset),
+                const SizedBox(height: 12),
+                AssetAffectationSection(asset: asset, canEdit: canEdit),
+                const SizedBox(height: 12),
+                AssetHistorySection(asset: asset),
+                const SizedBox(height: 80),
+              ],
+            ),
           ),
         ),
       ),

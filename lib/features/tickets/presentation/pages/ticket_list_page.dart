@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/tickets/presentation/providers/ticket_provider.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_card.dart';
@@ -93,11 +94,25 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                 ),
               ),
               data: (tickets) {
+                // Filtre recherche
                 final filtered = tickets.where((t) {
                   return t.title.toLowerCase().contains(_searchQuery) ||
                       (t.asset?.name ?? '').toLowerCase().contains(_searchQuery) ||
                       t.reference.toLowerCase().contains(_searchQuery);
                 }).toList();
+
+                // Tri : OPEN → IN_PROGRESS → RESOLVED → CLOSED
+                filtered.sort((a, b) {
+                  int statusPriority(TicketStatus s) => switch (s) {
+                    TicketStatus.open => 0,
+                    TicketStatus.inProgress => 1,
+                    TicketStatus.resolved => 2,
+                    TicketStatus.closed => 3,
+                  };
+                  final cmp = statusPriority(a.status).compareTo(statusPriority(b.status));
+                  if (cmp != 0) return cmp;
+                  return b.createdAt.compareTo(a.createdAt);
+                });
 
                 if (filtered.isEmpty) {
                   return Center(

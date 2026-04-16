@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:itam_app/features/tickets/data/repositories/ticket_repository_impl.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
@@ -11,6 +10,13 @@ class TicketDetail extends _$TicketDetail {
   Future<Ticket> build(int ticketId) async {
     final repository = ref.watch(ticketRepositoryProvider);
     return await repository.getTicketById(ticketId);
+  }
+
+  Future<void> assignTechnician(int? assigneeId) async {
+    final repository = ref.read(ticketRepositoryProvider);
+    await repository.assignTechnician(ticketId, assigneeId);
+    ref.invalidateSelf();
+    await future;
   }
 
   Future<void> addComment(String content) async {

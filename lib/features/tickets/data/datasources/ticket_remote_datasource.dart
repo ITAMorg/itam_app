@@ -12,12 +12,22 @@ abstract class TicketRemoteDataSource {
   Future<TicketModel> createTicket(Map<String, dynamic> body);
   Future<void> addComment(int ticketId, String content);
   Future<TicketModel> updateTicketStatus(int ticketId, String status);
+  Future<TicketModel> assignTechnician(int ticketId, int? assigneeId);
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   final Dio _dio;
 
   const TicketRemoteDataSourceImpl(this._dio);
+
+  @override
+  Future<TicketModel> assignTechnician(int ticketId, int? assigneeId) async {
+    final response = await _dio.patch(
+      '/tickets/$ticketId',
+      data: {'assigneeId': assigneeId},
+    );
+    return TicketModel.fromJson(response.data as Map<String, dynamic>);
+  }
 
   @override
   Future<List<TicketModel>> getTickets() async {

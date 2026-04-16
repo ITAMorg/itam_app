@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:itam_app/features/assets/presentation/providers/asset_detail_provider.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 
-class TicketAssetSection extends StatelessWidget {
+class TicketAssetSection extends ConsumerWidget {
   final TicketAsset? asset;
 
   const TicketAssetSection({super.key, required this.asset});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -43,7 +45,10 @@ class TicketAssetSection extends StatelessWidget {
             )
           else
             GestureDetector(
-              onTap: () => context.push('/assets/${asset!.id}?fromTicket=true'),
+              onTap: () {
+                ref.invalidate(assetDetailProvider(asset!.id.toString()));
+                context.push('/assets/${asset!.id}?fromTicket=true');
+              },
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(

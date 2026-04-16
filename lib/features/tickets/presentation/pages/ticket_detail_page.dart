@@ -21,44 +21,44 @@ class TicketDetailPage extends ConsumerWidget {
     final authState = ref.watch(authNotifierProvider);
     final isAdmin = authState.user?.role == 'ADMIN';
     final isTech = authState.user?.role == 'TECHNICIAN';
-    final canEdit = isAdmin || isTech;
 
     return Scaffold(
       appBar: DetailTopBar(
         title: 'Fiche ticket',
-        onEdit: canEdit ? () {
-          // TODO: navigation vers page édition
-        } : null,
-        onDelete: isAdmin ? () {
-          // TODO: dialog confirmation suppression
-        } : null,
       ),
       body: ticketAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erreur : $e')),
-        data: (ticket) => SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TicketHeaderCard(ticket: ticket),
-              const SizedBox(height: 12),
-              TicketAssetSection(asset: ticket.asset),
-              const SizedBox(height: 12),
-              TicketAssigneeSection(
-                assignee: ticket.assignee,
-                canEdit: canEdit,
-              ),
-              const SizedBox(height: 12),
-              TicketActionsSection(
-                ticketId: ticketId,
-                comments: ticket.comments,
-                canEdit: canEdit,
-              ),
-              const SizedBox(height: 80),
-            ],
-          ),
-        ),
+        data: (ticket) {
+          final isClosed = ticket.status == TicketStatus.resolved ||
+              ticket.status == TicketStatus.closed;
+          final canEdit = (isAdmin || isTech) && !isClosed;
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TicketHeaderCard(ticket: ticket),
+                const SizedBox(height: 12),
+                TicketAssetSection(asset: ticket.asset),
+                const SizedBox(height: 12),
+                TicketAssigneeSection(
+                  assignee: ticket.assignee,
+                  canEdit: canEdit,
+                  ticketId: ticketId,
+                ),
+                const SizedBox(height: 12),
+                TicketActionsSection(
+                  ticketId: ticketId,
+                  comments: ticket.comments,
+                  canEdit: canEdit,
+                ),
+                const SizedBox(height: 80),
+              ],
+            ),
+          );
+        },
       ),
       extendBody: true,
       bottomNavigationBar: ColoredBox(
@@ -68,15 +68,16 @@ class TicketDetailPage extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: ticketAsync.maybeWhen(
               data: (ticket) {
-                final isResolved = ticket.status == TicketStatus.resolved ||
+                final isClosed = ticket.status == TicketStatus.resolved ||
                     ticket.status == TicketStatus.closed;
                 final hasComments = ticket.comments.isNotEmpty;
+                final canResolve = (isAdmin || isTech) && !isClosed && hasComments;
 
                 return ActionButton(
                   label: 'Résolu',
                   color: Colors.green,
                   icon: Icons.check_rounded,
-                  onPressed: !isResolved && hasComments && canEdit
+                  onPressed: canResolve
                       ? () async {
                           await ref
                               .read(ticketDetailProvider(ticketId).notifier)

@@ -6,4 +6,5 @@ abstract class TicketRepository {
   Future<Ticket> createTicket(Map<String, dynamic> body);
   Future<void> addComment(int ticketId, String content);
   Future<Ticket> updateTicketStatus(int ticketId, String status);
+  Future<Ticket> assignTechnician(int ticketId, int? assigneeId);
 }

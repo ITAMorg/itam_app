@@ -13,6 +13,12 @@ class TicketRepositoryImpl implements TicketRepository {
   const TicketRepositoryImpl(this._datasource);
 
   @override
+  Future<Ticket> assignTechnician(int ticketId, int? assigneeId) async {
+    final model = await _datasource.assignTechnician(ticketId, assigneeId);
+    return model.toEntity();
+  }
+  
+  @override
   Future<List<Ticket>> getTickets() async {
     final models = await _datasource.getTickets();
     return models.map((m) => m.toEntity()).toList();

@@ -14,10 +14,33 @@ part 'auth_remote_datasource.g.dart';
 const _accessTokenKey = 'access_token';
 const _refreshTokenKey = 'refresh_token';
 
+class TechnicianModel {
+  final int id;
+  final String firstName;
+  final String lastName;
+  final String email;
+
+  const TechnicianModel({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+  });
+
+  factory TechnicianModel.fromJson(Map<String, dynamic> json) =>
+      TechnicianModel(
+        id: json['id'] as int,
+        firstName: json['firstName'] as String,
+        lastName: json['lastName'] as String,
+        email: json['email'] as String,
+      );
+}
+
 abstract class AuthRemoteDataSource {
   Future<UserModel> login({required String email, required String password});
   Future<void> logout();
   Future<UserModel?> getCurrentUser();
+  Future<List<TechnicianModel>> getUsersByRole(String role);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -25,6 +48,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FlutterSecureStorage _storage;
 
   const AuthRemoteDataSourceImpl(this._dio, this._storage);
+
+  @override
+  Future<List<TechnicianModel>> getUsersByRole(String role) async {
+    final response = await _dio.get('/users/role/$role');
+    final List<dynamic> data = response.data as List<dynamic>;
+    return data
+        .map((e) => TechnicianModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 
   @override
   Future<UserModel> login({
