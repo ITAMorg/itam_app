@@ -30,8 +30,7 @@ class TicketDetailPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Erreur : $e')),
         data: (ticket) {
-          final isClosed = ticket.status == TicketStatus.resolved ||
-              ticket.status == TicketStatus.closed;
+          final isClosed = ticket.status == TicketStatus.closed;
           final canEdit = (isAdmin || isTech) && !isClosed;
 
           return SingleChildScrollView(
@@ -68,10 +67,28 @@ class TicketDetailPage extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: ticketAsync.maybeWhen(
               data: (ticket) {
-                final isClosed = ticket.status == TicketStatus.resolved ||
-                    ticket.status == TicketStatus.closed;
+                final isResolved = ticket.status == TicketStatus.resolved;
+                final isClosed = ticket.status == TicketStatus.closed;
                 final hasComments = ticket.comments.isNotEmpty;
-                final canResolve = (isAdmin || isTech) && !isClosed && hasComments;
+                final canResolve = (isAdmin || isTech) &&
+                    ticket.status == TicketStatus.inProgress &&
+                    hasComments;
+                final canReopen = (isAdmin || isTech) && isResolved;
+
+                if (isClosed) return const SizedBox.shrink();
+
+                if (canReopen) {
+                  return ActionButton(
+                    label: 'Réouvrir le ticket',
+                    color: Colors.orange,
+                    icon: Icons.refresh_rounded,
+                    onPressed: () async {
+                      await ref
+                          .read(ticketDetailProvider(ticketId).notifier)
+                          .reopen();
+                    },
+                  );
+                }
 
                 return ActionButton(
                   label: 'Résolu',

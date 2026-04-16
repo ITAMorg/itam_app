@@ -33,4 +33,11 @@ class TicketDetail extends _$TicketDetail {
     ref.invalidateSelf();
     await future;
   }
+
+  Future<void> reopen() async {
+    final repository = ref.read(ticketRepositoryProvider);
+    await repository.updateTicketStatus(ticketId, 'IN_PROGRESS');
+    ref.invalidateSelf();
+    await future;
+  }
 }
