@@ -44,14 +44,14 @@ class TicketDetailPage extends ConsumerWidget {
                 const SizedBox(height: 12),
                 TicketAssigneeSection(
                   assignee: ticket.assignee,
-                  canEdit: canEdit,
+                  canEdit: canEdit && ticket.status != TicketStatus.resolved,
                   ticketId: ticketId,
                 ),
                 const SizedBox(height: 12),
                 TicketActionsSection(
                   ticketId: ticketId,
                   comments: ticket.comments,
-                  canEdit: canEdit,
+                  canEdit: canEdit && ticket.status != TicketStatus.resolved,
                 ),
                 const SizedBox(height: 80),
               ],
@@ -67,6 +67,8 @@ class TicketDetailPage extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: ticketAsync.maybeWhen(
               data: (ticket) {
+                if (!isAdmin && !isTech) return const SizedBox.shrink(); // ← ajoute ça
+
                 final isResolved = ticket.status == TicketStatus.resolved;
                 final isClosed = ticket.status == TicketStatus.closed;
                 final hasComments = ticket.comments.isNotEmpty;

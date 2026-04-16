@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/assets/presentation/providers/asset_detail_provider.dart';
-import 'package:itam_app/features/locations/domain/entities/location.dart';
 import 'package:itam_app/features/locations/presentation/providers/locations_provider.dart';
 
 class AssetLocationBottomSheet extends ConsumerStatefulWidget {

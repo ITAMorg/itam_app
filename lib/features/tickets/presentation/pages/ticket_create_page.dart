@@ -122,13 +122,12 @@ class _CreateTicketPageState extends ConsumerState<CreateTicketPage> {
 
     final body = {
       ..._formData.toJson(),
-      // auto-assignation si TECHNICIAN
       if (user.role == 'TECHNICIAN') 'assigneeId': user.id,
     };
 
     try {
-      await ref.read(createTicketUseCaseProvider).execute(body);
-      if (mounted) context.pop();
+      final ticket = await ref.read(createTicketUseCaseProvider).execute(body);
+      if (mounted) context.pushReplacement('/tickets/${ticket.id}');
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

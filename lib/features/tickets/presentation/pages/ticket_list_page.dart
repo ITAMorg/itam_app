@@ -183,25 +183,32 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                   return b.createdAt.compareTo(a.createdAt);
                 });
 
-                if (filtered.isEmpty) {
-                  return Center(
-                    child: Text('Aucun ticket trouvé',
-                        style: Theme.of(context).textTheme.bodyMedium),
-                  );
-                }
-
                 return RefreshIndicator(
-                  onRefresh: () =>
-                      ref.read(ticketListProvider.notifier).refresh(),
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: horizontalPadding, vertical: 8),
-                    itemCount: filtered.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 10),
-                    itemBuilder: (context, index) =>
-                        TicketCard(ticket: filtered[index]),
-                  ),
+                  onRefresh: () => ref.read(ticketListProvider.notifier).refresh(),
+                  child: filtered.isEmpty
+                      ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding, vertical: 8),
+                          children: [
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+                            Center(
+                              child: Text(
+                                'Aucun ticket trouvé',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        )
+                      : ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding, vertical: 8),
+                          itemCount: filtered.length,
+                          separatorBuilder: (_, __) => const SizedBox(height: 10),
+                          itemBuilder: (context, index) =>
+                              TicketCard(ticket: filtered[index]),
+                        ),
                 );
               },
             ),
