@@ -37,12 +37,6 @@ class _AssetDetailPageState extends ConsumerState<AssetDetailPage> {
       extendBody: true,
       appBar: DetailTopBar(
         title: 'Fiche matériel',
-        onEdit: isAdmin ? () {
-          // TODO: navigation vers page édition
-        } : null,
-        onDelete: isAdmin ? () {
-          // TODO: dialog confirmation suppression
-        } : null,
       ),
       bottomNavigationBar: assetAsync.whenOrNull(
         data: (asset) {
