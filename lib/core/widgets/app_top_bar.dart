@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
+import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart';
 
-class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
+class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
   const AppTopBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       backgroundColor: AppColors.surface,
       elevation: 0,
@@ -29,8 +31,10 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.settings_outlined, color: AppColors.textSecondary),
-          onPressed: () {},
+          icon: const Icon(Icons.logout_rounded, color: AppColors.textSecondary),
+          onPressed: () async {
+            await ref.read(authNotifierProvider.notifier).logout();
+          },
         ),
       ],
     );
