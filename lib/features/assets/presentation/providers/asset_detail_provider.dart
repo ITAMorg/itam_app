@@ -22,4 +22,11 @@ class AssetDetail extends _$AssetDetail {
     ref.invalidateSelf();
     await future;
   }
+
+  Future<void> updateLocation(int? locationId) async {
+    final repository = ref.read(assetRepositoryProvider);
+    await repository.updateLocation(assetId, locationId);
+    ref.invalidateSelf();
+    await future;
+  }
 }

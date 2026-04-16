@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/assets/domain/entities/asset.dart';
+import 'package:itam_app/features/assets/presentation/widgets/asset_location_bottom_sheet.dart';
 
 class AssetAffectationSection extends StatelessWidget {
   final Asset asset;
@@ -41,8 +42,16 @@ class AssetAffectationSection extends StatelessWidget {
                 if (canEdit)
                   GestureDetector(
                     onTap: () {
-                      // TODO: ouvrir bottom sheet de modification d'affectation
-                    },
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        builder: (_) => AssetLocationBottomSheet(
+                          assetId: asset.id,
+                          currentLocationId: asset.location?.id,
+                          ),
+                        );
+                      },
                     child: const Icon(
                       Icons.edit_rounded,
                       color: AppColors.textSecondary,

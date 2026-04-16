@@ -29,6 +29,12 @@ class AssetRepositoryImpl implements AssetRepository {
     final model = await _datasource.getAssetById(id);
     return model.toEntity();
   }
+
+  @override
+  Future<Asset> updateLocation(String assetId, int? locationId) async {
+    final model = await _datasource.updateLocation(assetId, locationId);
+    return model.toEntity();
+  }
 }
 
 @riverpod

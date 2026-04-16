@@ -10,6 +10,7 @@ abstract class AssetRemoteDataSource {
   Future<List<AssetModel>> getAssets();
   Future<List<AssetModel>> getAssetsByLocation(int locationId);
   Future<AssetModel> getAssetById(String id);
+  Future<AssetModel> updateLocation(String assetId, int? locationId);
 }
 
 class AssetRemoteDataSourceImpl implements AssetRemoteDataSource {
@@ -34,6 +35,16 @@ class AssetRemoteDataSourceImpl implements AssetRemoteDataSource {
   @override
   Future<AssetModel> getAssetById(String id) async {
     final response = await _dio.get('/assets/$id');
+    return AssetModel.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<AssetModel> updateLocation(String assetId, int? locationId) async {
+    await _dio.patch(
+      '/assets/$assetId/location',
+      data: {'locationId': locationId},
+    );
+    final response = await _dio.get('/assets/$assetId');
     return AssetModel.fromJson(response.data as Map<String, dynamic>);
   }
 }

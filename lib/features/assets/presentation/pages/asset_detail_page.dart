@@ -40,7 +40,6 @@ class _AssetDetailPageState extends ConsumerState<AssetDetailPage> {
       ),
       bottomNavigationBar: assetAsync.whenOrNull(
         data: (asset) {
-          // Masqué si on vient d'un ticket
           if (widget.fromTicket) return const SizedBox.shrink();
 
           final activeTicket = asset.activeTicket;

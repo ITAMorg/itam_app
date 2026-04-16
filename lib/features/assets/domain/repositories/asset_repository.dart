@@ -4,4 +4,5 @@ abstract class AssetRepository {
   Future<List<Asset>> getAssets();
   Future<List<Asset>> getAssetsByLocation(int locationId);
   Future<Asset> getAssetById(String id);
+  Future<Asset> updateLocation(String assetId, int? locationId);
 }
