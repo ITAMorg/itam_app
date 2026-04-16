@@ -135,14 +135,12 @@ class TicketHeaderCard extends StatelessWidget {
         TicketPriority.low => const Color(0xFF22C55E),
         TicketPriority.medium => const Color(0xFFF59E0B),
         TicketPriority.high => const Color(0xFFEF4444),
-        TicketPriority.critical => const Color(0xFF7C3AED),
       };
 
   String _priorityLabel(TicketPriority priority) => switch (priority) {
         TicketPriority.low => 'Faible',
         TicketPriority.medium => 'Moyenne',
         TicketPriority.high => 'Haute',
-        TicketPriority.critical => 'Critique',
       };
 
   Color _statusColor(TicketStatus status) => switch (status) {

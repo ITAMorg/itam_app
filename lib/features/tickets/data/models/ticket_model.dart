@@ -160,7 +160,6 @@ extension TicketModelMapper on TicketModel {
         'LOW' => TicketPriority.low,
         'MEDIUM' => TicketPriority.medium,
         'HIGH' => TicketPriority.high,
-        'CRITICAL' => TicketPriority.critical,
         _ => TicketPriority.medium,
       };
 }

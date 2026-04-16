@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
+import 'package:itam_app/core/widgets/action_button.dart';
+import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 import 'package:itam_app/features/tickets/presentation/providers/ticket_provider.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_card.dart';
-import 'package:itam_app/core/widgets/action_button.dart';
+import 'package:itam_app/features/tickets/presentation/widgets/ticket_filter_sheet.dart';
 
 class TicketListPage extends ConsumerStatefulWidget {
   const TicketListPage({super.key});
@@ -17,11 +18,35 @@ class TicketListPage extends ConsumerStatefulWidget {
 class _TicketListPageState extends ConsumerState<TicketListPage> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
+  TicketStatus? _selectedStatus;
+  TicketPriority? _selectedPriority;
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  bool get _hasActiveFilters =>
+      _selectedStatus != null || _selectedPriority != null;
+
+  Future<void> _openFilterSheet() async {
+    final result = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => TicketFilterSheet(
+        initialStatus: _selectedStatus,
+        initialPriority: _selectedPriority,
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedStatus = result['status'] as TicketStatus?;
+        _selectedPriority = result['priority'] as TicketPriority?;
+      });
+    }
   }
 
   @override
@@ -35,7 +60,8 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
       backgroundColor: Colors.transparent,
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(horizontalPadding, 12, horizontalPadding, 12),
+          padding: EdgeInsets.fromLTRB(
+              horizontalPadding, 12, horizontalPadding, 12),
           child: ActionButton(
             label: 'Ouvrir un incident',
             color: Colors.red,
@@ -49,7 +75,7 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
           // Barre de recherche
           Padding(
             padding: EdgeInsets.fromLTRB(
-                horizontalPadding, 16, horizontalPadding, 12),
+                horizontalPadding, 16, horizontalPadding, 8),
             child: Row(
               children: [
                 Expanded(
@@ -64,74 +90,115 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: AppColors.border.withValues(alpha: 0.5),
+                GestureDetector(
+                  onTap: _openFilterSheet,
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: _hasActiveFilters
+                          ? AppColors.primary.withValues(alpha: 0.2)
+                          : AppColors.surface,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: _hasActiveFilters
+                            ? AppColors.primary
+                            : AppColors.border.withValues(alpha: 0.5),
+                      ),
                     ),
-                  ),
-                  child: const Icon(
-                    Icons.tune_rounded,
-                    color: AppColors.textSecondary,
+                    child: Icon(
+                      Icons.tune_rounded,
+                      color: _hasActiveFilters
+                          ? AppColors.primary
+                          : AppColors.textSecondary,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
 
+          // Chips filtres actifs
+          if (_hasActiveFilters)
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.fromLTRB(
+                  horizontalPadding, 0, horizontalPadding, 8),
+              child: Row(
+                children: [
+                  if (_selectedStatus != null)
+                    _ActiveFilterChip(
+                      label: _statusLabel(_selectedStatus!),
+                      color: _statusColor(_selectedStatus!),
+                      onRemove: () =>
+                          setState(() => _selectedStatus = null),
+                    ),
+                  if (_selectedPriority != null) ...[
+                    if (_selectedStatus != null) const SizedBox(width: 8),
+                    _ActiveFilterChip(
+                      label: _priorityLabel(_selectedPriority!),
+                      color: _priorityColor(_selectedPriority!),
+                      onRemove: () =>
+                          setState(() => _selectedPriority = null),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+
           // Liste
           Expanded(
             child: ticketsAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(
-                child: Text(
-                  'Erreur : $e',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                child: Text('Erreur : $e',
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
               data: (tickets) {
-                // Filtre recherche
                 final filtered = tickets.where((t) {
-                  return t.title.toLowerCase().contains(_searchQuery) ||
-                      (t.asset?.name ?? '').toLowerCase().contains(_searchQuery) ||
-                      t.reference.toLowerCase().contains(_searchQuery);
+                  final matchesSearch =
+                      t.title.toLowerCase().contains(_searchQuery) ||
+                          (t.asset?.name ?? '')
+                              .toLowerCase()
+                              .contains(_searchQuery) ||
+                          t.reference.toLowerCase().contains(_searchQuery);
+                  final matchesStatus = _selectedStatus == null ||
+                      t.status == _selectedStatus;
+                  final matchesPriority = _selectedPriority == null ||
+                      t.priority == _selectedPriority;
+                  return matchesSearch && matchesStatus && matchesPriority;
                 }).toList();
 
-                // Tri : OPEN → IN_PROGRESS → RESOLVED → CLOSED
                 filtered.sort((a, b) {
                   int statusPriority(TicketStatus s) => switch (s) {
-                    TicketStatus.open => 0,
-                    TicketStatus.inProgress => 1,
-                    TicketStatus.resolved => 2,
-                    TicketStatus.closed => 3,
-                  };
-                  final cmp = statusPriority(a.status).compareTo(statusPriority(b.status));
+                        TicketStatus.open => 0,
+                        TicketStatus.inProgress => 1,
+                        TicketStatus.resolved => 2,
+                        TicketStatus.closed => 3,
+                      };
+                  final cmp = statusPriority(a.status)
+                      .compareTo(statusPriority(b.status));
                   if (cmp != 0) return cmp;
                   return b.createdAt.compareTo(a.createdAt);
                 });
 
                 if (filtered.isEmpty) {
                   return Center(
-                    child: Text(
-                      'Aucun ticket trouvé',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    child: Text('Aucun ticket trouvé',
+                        style: Theme.of(context).textTheme.bodyMedium),
                   );
                 }
 
                 return RefreshIndicator(
-                  onRefresh: () => ref.read(ticketListProvider.notifier).refresh(),
+                  onRefresh: () =>
+                      ref.read(ticketListProvider.notifier).refresh(),
                   child: ListView.separated(
                     padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPadding,
-                      vertical: 8,
-                    ),
+                        horizontal: horizontalPadding, vertical: 8),
                     itemCount: filtered.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    separatorBuilder: (_, __) =>
+                        const SizedBox(height: 10),
                     itemBuilder: (context, index) =>
                         TicketCard(ticket: filtered[index]),
                   ),
@@ -140,6 +207,73 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  String _statusLabel(TicketStatus s) => switch (s) {
+        TicketStatus.open => 'Ouvert',
+        TicketStatus.inProgress => 'En cours',
+        TicketStatus.resolved => 'Résolu',
+        TicketStatus.closed => 'Fermé',
+      };
+
+  Color _statusColor(TicketStatus s) => switch (s) {
+        TicketStatus.open => Colors.red,
+        TicketStatus.inProgress => Colors.orange,
+        TicketStatus.resolved => Colors.green,
+        TicketStatus.closed => AppColors.textSecondary,
+      };
+
+  String _priorityLabel(TicketPriority p) => switch (p) {
+        TicketPriority.low => 'Basse',
+        TicketPriority.medium => 'Moyenne',
+        TicketPriority.high => 'Haute',
+      };
+
+  Color _priorityColor(TicketPriority p) => switch (p) {
+        TicketPriority.low => Colors.green,
+        TicketPriority.medium => Colors.orange,
+        TicketPriority.high => Colors.red,
+      };
+}
+
+class _ActiveFilterChip extends StatelessWidget {
+  final String label;
+  final Color color;
+  final VoidCallback onRemove;
+
+  const _ActiveFilterChip({
+    required this.label,
+    required this.color,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onRemove,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color, width: 1.5),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(width: 6),
+            Icon(Icons.close_rounded, color: color, size: 14),
+          ],
+        ),
       ),
     );
   }

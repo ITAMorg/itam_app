@@ -4,7 +4,7 @@ part 'ticket.freezed.dart';
 
 enum TicketStatus { open, inProgress, resolved, closed }
 
-enum TicketPriority { low, medium, high, critical }
+enum TicketPriority { low, medium, high }
 
 enum TicketType { incident, request }
 
