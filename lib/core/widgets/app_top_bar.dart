@@ -25,7 +25,10 @@ class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
           const SizedBox(width: 8),
           Text(
             'ITAM',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: 30,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ],
       ),

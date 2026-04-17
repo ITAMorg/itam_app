@@ -24,8 +24,12 @@ class DetailTopBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.background,
             shape: BoxShape.circle,
+            border: Border.all(
+              color: AppColors.border.withValues(alpha: 0.3),
+              width: 1,
+            ),
           ),
           child: const Icon(
             Icons.arrow_back_rounded,
@@ -36,7 +40,10 @@ class DetailTopBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          fontSize: 25,
+        ),
       ),
     );
   }

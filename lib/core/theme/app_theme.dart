@@ -12,7 +12,7 @@ class AppColors {
 
   // Text
   static const textPrimary = Colors.white;
-  static const textSecondary = Color(0xFF8888AA);
+  static const textSecondary = Colors.white;
 }
 
 class AssetStatusColors {

@@ -18,14 +18,15 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: FilledButton.icon(
+      child: ElevatedButton.icon(
         onPressed: onPressed,
         icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
         label: Text(label),
-        style: FilledButton.styleFrom(
+        style: ElevatedButton.styleFrom(
           backgroundColor: color,
           disabledBackgroundColor: color.withValues(alpha: 0.3),
-          disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+          foregroundColor: Colors.white,
+          disabledForegroundColor: Colors.white.withValues(alpha: 0.4),
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
