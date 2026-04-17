@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/core/widgets/action_button.dart';
+import 'package:itam_app/core/widgets/search_filter_bar.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 import 'package:itam_app/features/tickets/presentation/providers/ticket_provider.dart';
 import 'package:itam_app/features/tickets/presentation/widgets/ticket_card.dart';
@@ -29,6 +30,8 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
 
   bool get _hasActiveFilters =>
       _selectedStatus != null || _selectedPriority != null;
+
+  double get _headerHeight => _hasActiveFilters ? 100 : 64;
 
   Future<void> _openFilterSheet() async {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
@@ -70,147 +73,141 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // Barre de recherche
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-                horizontalPadding, 16, horizontalPadding, 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
+          // Liste qui prend tout l'espace
+          ticketsAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, _) => Center(
+              child: Text('Erreur : $e',
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
+            data: (tickets) {
+              final filtered = tickets.where((t) {
+                final matchesSearch =
+                    t.title.toLowerCase().contains(_searchQuery) ||
+                        (t.asset?.name ?? '')
+                            .toLowerCase()
+                            .contains(_searchQuery) ||
+                        t.reference.toLowerCase().contains(_searchQuery);
+                final matchesStatus =
+                    _selectedStatus == null || t.status == _selectedStatus;
+                final matchesPriority =
+                    _selectedPriority == null || t.priority == _selectedPriority;
+                return matchesSearch && matchesStatus && matchesPriority;
+              }).toList();
+
+              filtered.sort((a, b) {
+                int statusPriority(TicketStatus s) => switch (s) {
+                      TicketStatus.open => 0,
+                      TicketStatus.inProgress => 1,
+                      TicketStatus.resolved => 2,
+                      TicketStatus.closed => 3,
+                    };
+                final cmp =
+                    statusPriority(a.status).compareTo(statusPriority(b.status));
+                if (cmp != 0) return cmp;
+                return b.createdAt.compareTo(a.createdAt);
+              });
+
+              return RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(ticketListProvider.notifier).refresh(),
+                child: filtered.isEmpty
+                    ? ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(
+                            horizontalPadding,
+                            _headerHeight + 8,
+                            horizontalPadding,
+                            8),
+                        children: [
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.3),
+                          Center(
+                            child: Text(
+                              'Aucun ticket trouvé',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
+                      )
+                    : ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(
+                            horizontalPadding,
+                            _headerHeight + 8,
+                            horizontalPadding,
+                            8),
+                        itemCount: filtered.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemBuilder: (context, index) =>
+                            TicketCard(ticket: filtered[index]),
+                      ),
+              );
+            },
+          ),
+
+          // Header flottant avec gradient
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(
+                  horizontalPadding, 12, horizontalPadding, 8),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.background,
+                    AppColors.background,
+                    AppColors.background.withValues(alpha: 0),
+                  ],
+                  stops: const [0.0, 0.75, 1.0],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SearchFilterBar(
                     controller: _searchController,
                     onChanged: (value) =>
                         setState(() => _searchQuery = value.toLowerCase()),
-                    decoration: const InputDecoration(
-                      hintText: 'Recherche...',
-                      prefixIcon: Icon(Icons.search_rounded),
-                    ),
+                    onFilterTap: _openFilterSheet,
+                    hasActiveFilters: _hasActiveFilters,
                   ),
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: _openFilterSheet,
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: _hasActiveFilters
-                          ? AppColors.primary.withValues(alpha: 0.2)
-                          : AppColors.surface,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: _hasActiveFilters
-                            ? AppColors.primary
-                            : AppColors.border.withValues(alpha: 0.5),
+                  if (_hasActiveFilters) ...[
+                    const SizedBox(height: 8),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          if (_selectedStatus != null)
+                            _ActiveFilterChip(
+                              label: _statusLabel(_selectedStatus!),
+                              color: _statusColor(_selectedStatus!),
+                              onRemove: () =>
+                                  setState(() => _selectedStatus = null),
+                            ),
+                          if (_selectedPriority != null) ...[
+                            if (_selectedStatus != null)
+                              const SizedBox(width: 8),
+                            _ActiveFilterChip(
+                              label: _priorityLabel(_selectedPriority!),
+                              color: _priorityColor(_selectedPriority!),
+                              onRemove: () =>
+                                  setState(() => _selectedPriority = null),
+                            ),
+                          ],
+                        ],
                       ),
-                    ),
-                    child: Icon(
-                      Icons.tune_rounded,
-                      color: _hasActiveFilters
-                          ? AppColors.primary
-                          : AppColors.textSecondary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Chips filtres actifs
-          if (_hasActiveFilters)
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.fromLTRB(
-                  horizontalPadding, 0, horizontalPadding, 8),
-              child: Row(
-                children: [
-                  if (_selectedStatus != null)
-                    _ActiveFilterChip(
-                      label: _statusLabel(_selectedStatus!),
-                      color: _statusColor(_selectedStatus!),
-                      onRemove: () =>
-                          setState(() => _selectedStatus = null),
-                    ),
-                  if (_selectedPriority != null) ...[
-                    if (_selectedStatus != null) const SizedBox(width: 8),
-                    _ActiveFilterChip(
-                      label: _priorityLabel(_selectedPriority!),
-                      color: _priorityColor(_selectedPriority!),
-                      onRemove: () =>
-                          setState(() => _selectedPriority = null),
                     ),
                   ],
                 ],
               ),
-            ),
-
-          // Liste
-          Expanded(
-            child: ticketsAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(
-                child: Text('Erreur : $e',
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ),
-              data: (tickets) {
-                final filtered = tickets.where((t) {
-                  final matchesSearch =
-                      t.title.toLowerCase().contains(_searchQuery) ||
-                          (t.asset?.name ?? '')
-                              .toLowerCase()
-                              .contains(_searchQuery) ||
-                          t.reference.toLowerCase().contains(_searchQuery);
-                  final matchesStatus = _selectedStatus == null ||
-                      t.status == _selectedStatus;
-                  final matchesPriority = _selectedPriority == null ||
-                      t.priority == _selectedPriority;
-                  return matchesSearch && matchesStatus && matchesPriority;
-                }).toList();
-
-                filtered.sort((a, b) {
-                  int statusPriority(TicketStatus s) => switch (s) {
-                        TicketStatus.open => 0,
-                        TicketStatus.inProgress => 1,
-                        TicketStatus.resolved => 2,
-                        TicketStatus.closed => 3,
-                      };
-                  final cmp = statusPriority(a.status)
-                      .compareTo(statusPriority(b.status));
-                  if (cmp != 0) return cmp;
-                  return b.createdAt.compareTo(a.createdAt);
-                });
-
-                return RefreshIndicator(
-                  onRefresh: () => ref.read(ticketListProvider.notifier).refresh(),
-                  child: filtered.isEmpty
-                      ? ListView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: horizontalPadding, vertical: 8),
-                          children: [
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.3),
-                            Center(
-                              child: Text(
-                                'Aucun ticket trouvé',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ),
-                          ],
-                        )
-                      : ListView.separated(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: horizontalPadding, vertical: 8),
-                          itemCount: filtered.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 10),
-                          itemBuilder: (context, index) =>
-                              TicketCard(ticket: filtered[index]),
-                        ),
-                );
-              },
             ),
           ),
         ],
