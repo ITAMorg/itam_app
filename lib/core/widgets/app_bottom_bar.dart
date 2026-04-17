@@ -104,7 +104,7 @@ class _ScannerButton extends StatelessWidget {
           child: const Icon(
             Icons.qr_code_scanner_rounded,
             color: Colors.white,
-            size: 28,
+            size: 30,
           ),
         ),
       ),

@@ -19,16 +19,13 @@ class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
         children: [
           Image.asset(
             'assets/icons/itam_logo_small.png',
-            width: 28,
-            height: 28,
+            width: 40,
+            height: 40,
           ),
           const SizedBox(width: 8),
           Text(
             'ITAM',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
-            ),
+            style: Theme.of(context).textTheme.titleMedium
           ),
         ],
       ),
