@@ -33,24 +33,18 @@ class AssetCard extends StatelessWidget {
     final assetColor = ColorResolver.resolve(asset.assetType.colorKey);
     final iconData = IconResolver.resolve(asset.assetType.iconKey);
 
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth >= 900;
-    final horizontalPadding = isDesktop ? 32.0 : 16.0;
-
     return GestureDetector(
       onTap: () => context.push('/assets/${asset.id}'),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColors.border.withValues(alpha: 0.2),
-            ),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppColors.border.withValues(alpha: 0.2),
           ),
-          child: Row(
+        ),
+        child: Row(
             children: [
               Container(
                 width: 44,
@@ -115,7 +109,6 @@ class AssetCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }

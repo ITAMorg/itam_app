@@ -5,10 +5,10 @@ import 'package:itam_app/core/widgets/detail_top_bar.dart';
 import 'package:itam_app/core/widgets/action_button.dart';
 import 'package:itam_app/features/assets/presentation/providers/asset_detail_provider.dart';
 import 'package:itam_app/features/auth/presentation/providers/auth_provider.dart';
-import 'package:itam_app/features/assets/presentation/widgets/asset_header_card.dart';
-import 'package:itam_app/features/assets/presentation/widgets/asset_info_section.dart';
-import 'package:itam_app/features/assets/presentation/widgets/asset_affectation_section.dart';
-import 'package:itam_app/features/assets/presentation/widgets/asset_history_section.dart';
+import 'package:itam_app/features/assets/presentation/widgets/asset_detail/asset_header_card.dart';
+import 'package:itam_app/features/assets/presentation/widgets/asset_detail/asset_info_section.dart';
+import 'package:itam_app/features/assets/presentation/widgets/asset_detail/asset_affectation_section.dart';
+import 'package:itam_app/features/assets/presentation/widgets/asset_detail/asset_history_section.dart';
 
 class AssetDetailPage extends ConsumerStatefulWidget {
   final String assetId;
@@ -76,17 +76,26 @@ class _AssetDetailPageState extends ConsumerState<AssetDetailPage> {
           onRefresh: () => ref.read(assetDetailProvider(widget.assetId).notifier).refresh(),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(bottom: 80),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AssetHeaderCard(asset: asset),
                 const SizedBox(height: 12),
-                AssetInfoSection(asset: asset),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AssetInfoSection(asset: asset),
+                ),
                 const SizedBox(height: 12),
-                AssetAffectationSection(asset: asset, canEdit: canEdit),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AssetAffectationSection(asset: asset, canEdit: canEdit),
+                ),
                 const SizedBox(height: 12),
-                AssetHistorySection(asset: asset),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AssetHistorySection(asset: asset),
+                ),
                 const SizedBox(height: 80),
               ],
             ),

@@ -35,11 +35,12 @@ class AssetHeaderCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+        border: Border.symmetric(
+          horizontal: BorderSide(color: AppColors.border.withValues(alpha: 0.2)),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,14 +49,14 @@ class AssetHeaderCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 56,
-                height: 56,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   color: assetColor.withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: assetColor),
                 ),
-                child: Icon(iconData, color: Colors.white, size: 28),
+                child: Icon(iconData, color: Colors.white, size: 40),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -64,7 +65,9 @@ class AssetHeaderCard extends StatelessWidget {
                   children: [
                     Text(
                       asset.name,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -132,7 +135,6 @@ class AssetHeaderCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          // Dates achat + garantie
           Row(
             children: [
               Expanded(
@@ -172,11 +174,11 @@ class _DateCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.background,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(15),
         border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start, // label à gauche
         children: [
           Text(
             label,
@@ -186,9 +188,13 @@ class _DateCard extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 4),
-          Text(
-            formatted,
-            style: Theme.of(context).textTheme.titleMedium,
+          SizedBox(
+            width: double.infinity,
+            child: Text(
+              formatted,
+              textAlign: TextAlign.center, // date centrée
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
           ),
         ],
       ),
