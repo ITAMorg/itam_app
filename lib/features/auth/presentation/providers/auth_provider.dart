@@ -2,6 +2,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../data/repositories/auth_repository_impl.dart';
+import 'package:itam_app/features/assets/presentation/providers/assets_provider.dart';
+import 'package:itam_app/features/tickets/presentation/providers/ticket_provider.dart';
 
 part 'auth_provider.g.dart';
 
@@ -73,5 +75,9 @@ class AuthNotifier extends _$AuthNotifier {
     final repository = ref.read(authRepositoryProvider);
     await repository.logout();
     state = const AuthState(status: AuthStatus.unauthenticated);
+
+     // Vider le cache des providers
+    ref.invalidate(assetsProvider);
+    ref.invalidate(ticketListProvider);
   }
 }
