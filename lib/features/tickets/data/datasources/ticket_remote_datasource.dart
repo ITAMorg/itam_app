@@ -32,7 +32,6 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   @override
   Future<List<TicketModel>> getTickets() async {
     final response = await _dio.get('/tickets');
-    print('getTickets response: ${response.statusCode} — ${response.data}'); // ← ajoute
     final List<dynamic> data = response.data as List<dynamic>;
     return data
         .map((json) => TicketModel.fromJson(json as Map<String, dynamic>))

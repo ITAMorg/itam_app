@@ -87,47 +87,120 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   Widget _buildEmailField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('ADRESSE EMAIL', style: AppTextStyles.labelSmall),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _emailController,
-          keyboardType: TextInputType.emailAddress,
-          style: AppTextStyles.bodyMedium,
-          decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.email_outlined),
-          ),
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: AppColors.border.withValues(alpha: 0.4),
         ),
-      ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Text('ADRESSE EMAIL', style: AppTextStyles.labelSection),
+                ),
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: AppColors.border.withValues(alpha: 0.4),
+                ),
+                TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  style: AppTextStyles.bodyMedium,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.email_outlined, size: 20),
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 48,
+                      minHeight: 48,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildPasswordField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('MOT DE PASSE', style: AppTextStyles.labelSmall),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _passwordController,
-          obscureText: _obscurePassword,
-          style: AppTextStyles.bodyMedium,
-          decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.lock_outline),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscurePassword
-                    ? Icons.visibility_off_outlined
-                    : Icons.visibility_outlined,
-              ),
-              onPressed: () =>
-                  setState(() => _obscurePassword = !_obscurePassword),
-            ),
-          ),
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: AppColors.border.withValues(alpha: 0.4),
         ),
-      ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14), // 1px de moins pour rester dans la bordure
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Text('MOT DE PASSE', style: AppTextStyles.labelSection),
+                ),
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: AppColors.border.withValues(alpha: 0.4),
+                ),
+                TextField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  style: AppTextStyles.bodyMedium,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.lock_outline, size: 20),
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 48,
+                      minHeight: 48,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        size: 20,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
