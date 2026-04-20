@@ -18,7 +18,7 @@ class AssetListPage extends ConsumerStatefulWidget {
 class _AssetListPageState extends ConsumerState<AssetListPage> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
-  AssetStatus? _selectedStatus;
+  Set<AssetStatus> _selectedStatuses = {};
   String? _selectedType;
   int? _selectedLocationId;
 
@@ -29,9 +29,9 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
   }
 
   bool get _hasActiveFilters =>
-      _selectedStatus != null ||
-      _selectedType != null ||
-      _selectedLocationId != null;
+    _selectedStatuses.isNotEmpty ||
+    _selectedType != null ||
+    _selectedLocationId != null;
 
   double get _headerHeight => _hasActiveFilters ? 100 : 64;
 
@@ -50,7 +50,7 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
         availableTypes: types,
         availableLocations: locations,
         showLocations: !isUser,
-        initialStatus: _selectedStatus,
+        initialStatuses: _selectedStatuses,
         initialType: _selectedType,
         initialLocationId: _selectedLocationId,
       ),
@@ -58,7 +58,7 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
 
     if (result != null) {
       setState(() {
-        _selectedStatus = result['status'] as AssetStatus?;
+        _selectedStatuses = (result['statuses'] as List<AssetStatus>?)?.toSet() ?? {};
         _selectedType = result['type'] as String?;
         _selectedLocationId = result['locationId'] as int?;
       });
@@ -94,8 +94,8 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
                           .toLowerCase()
                           .contains(_searchQuery) ||
                       a.assetType.name.toLowerCase().contains(_searchQuery);
-              final matchesStatus =
-                  _selectedStatus == null || a.status == _selectedStatus;
+              final matchesStatus = _selectedStatuses.isEmpty || 
+                _selectedStatuses.contains(a.status);
               final matchesType =
                   _selectedType == null || a.assetType.name == _selectedType;
               final matchesLocation = _selectedLocationId == null ||
@@ -182,15 +182,14 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        if (_selectedStatus != null)
-                          _ActiveFilterChip(
-                            label: _statusLabel(_selectedStatus!, statusColors),
-                            color: _statusColor(_selectedStatus!, statusColors),
-                            onRemove: () =>
-                                setState(() => _selectedStatus = null),
-                          ),
+                        if (_selectedStatuses.isNotEmpty)
+                           ..._selectedStatuses.map((status) => _ActiveFilterChip(
+                          label: _statusLabel(status, statusColors),
+                          color: _statusColor(status, statusColors),
+                          onRemove: () => setState(() => _selectedStatuses.remove(status)),
+                        )),
                         if (_selectedType != null) ...[
-                          if (_selectedStatus != null)
+                          if (_selectedStatuses.isNotEmpty)
                             const SizedBox(width: 8),
                           _ActiveFilterChip(
                             label: _selectedType!,
@@ -200,7 +199,7 @@ class _AssetListPageState extends ConsumerState<AssetListPage> {
                           ),
                         ],
                         if (_selectedLocationId != null) ...[
-                          if (_selectedStatus != null || _selectedType != null)
+                          if (_selectedStatuses.isNotEmpty || _selectedType != null)
                             const SizedBox(width: 8),
                           _ActiveFilterChip(
                             label: assetsAsync.maybeWhen(

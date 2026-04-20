@@ -24,14 +24,12 @@ class AssetInfoSection extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
             child: Text(
               'INFORMATIONS TECHNIQUES',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    letterSpacing: 0.8,
-                  ),
+              style: AppTextStyles.titleSection
             ),
           ),
           const SizedBox(height: 8),
           // Lignes
+          _Divider(),
           _InfoRow(label: 'Marque', value: asset.brand),
           _Divider(),
           _InfoRow(label: 'Modèle', value: asset.model),
@@ -62,19 +60,18 @@ class _InfoRow extends StatelessWidget {
             flex: 2,
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: AppTextStyles.labelSection,
             ),
           ),
           Expanded(
             flex: 3,
             child: Text(
               value ?? '—',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: AppTextStyles.bodySection.copyWith(
                     color: value != null
                         ? AppColors.textPrimary
                         : AppColors.textSecondary,
+                    fontWeight: value != null ? FontWeight.w700 : FontWeight.w400,
               ),
               textAlign: TextAlign.end,
             ),
@@ -91,8 +88,6 @@ class _Divider extends StatelessWidget {
     return Divider(
       height: 1,
       thickness: 1,
-      indent: 16,
-      endIndent: 16,
       color: AppColors.border.withValues(alpha: 0.15),
     );
   }

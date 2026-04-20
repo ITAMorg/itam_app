@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/core/utils/color_resolver.dart';
 import 'package:itam_app/core/utils/icon_resolver.dart';
+import 'package:itam_app/core/widgets/status_chip.dart';
 import 'package:itam_app/features/assets/domain/entities/asset.dart';
 
 class AssetHeaderCard extends StatelessWidget {
@@ -105,35 +106,7 @@ class AssetHeaderCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          // Badge statut
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: statusColor.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: statusColor),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 6,
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  statusLabel,
-                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                        color: statusColor,
-                      ),
-                ),
-              ],
-            ),
-          ),
+          StatusChip(label: statusLabel, color: statusColor),
           const SizedBox(height: 14),
           Row(
             children: [

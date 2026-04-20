@@ -33,10 +33,7 @@ class AssetAffectationSection extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'AFFECTATION',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          letterSpacing: 0.8,
-                        ),
+                    style: AppTextStyles.titleSection,
                   ),
                 ),
                 if (canEdit)
@@ -62,31 +59,32 @@ class AssetAffectationSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          // Localisation
+          _Divider(),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
             child: Row(
               children: [
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.15),
+                    color: AppColors.primary.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.4),
+                      color: AppColors.primary,
                     ),
                   ),
                   child: const Icon(
                     Icons.location_on_rounded,
-                    color: AppColors.primary,
-                    size: 18,
+                    color: AppColors.textPrimary,
+                    size: 27,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   asset.location?.name ?? 'Non assigné',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: AppTextStyles.bodySection.copyWith(
                         color: asset.location != null
                             ? AppColors.textPrimary
                             : AppColors.textSecondary,
@@ -97,6 +95,17 @@ class AssetAffectationSection extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      thickness: 1,
+      color: AppColors.border.withValues(alpha: 0.15),
     );
   }
 }

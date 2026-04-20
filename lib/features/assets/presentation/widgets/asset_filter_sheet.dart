@@ -6,7 +6,7 @@ class AssetFilterSheet extends StatefulWidget {
   final List<String> availableTypes;
   final Map<int, String> availableLocations;
   final bool showLocations;
-  final AssetStatus? initialStatus;
+  final Set<AssetStatus>? initialStatuses;
   final String? initialType;
   final int? initialLocationId;
 
@@ -15,7 +15,7 @@ class AssetFilterSheet extends StatefulWidget {
     required this.availableTypes,
     required this.availableLocations,
     required this.showLocations,
-    this.initialStatus,
+    this.initialStatuses,
     this.initialType,
     this.initialLocationId,
   });
@@ -25,14 +25,14 @@ class AssetFilterSheet extends StatefulWidget {
 }
 
 class _AssetFilterSheetState extends State<AssetFilterSheet> {
-  AssetStatus? _status;
+  Set<AssetStatus> _statuses = {};
   String? _type;
   int? _locationId;
 
   @override
   void initState() {
     super.initState();
-    _status = widget.initialStatus;
+    _statuses = widget.initialStatuses?.toSet() ?? {};
     _type = widget.initialType;
     _locationId = widget.initialLocationId;
   }
@@ -73,10 +73,10 @@ class _AssetFilterSheetState extends State<AssetFilterSheet> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const Spacer(),
-              if (_status != null || _type != null || _locationId != null)
+              if (_statuses.isNotEmpty || _type != null || _locationId != null)
                 GestureDetector(
                   onTap: () => setState(() {
-                    _status = null;
+                    _statuses = {};
                     _type = null;
                     _locationId = null;
                   }),
@@ -151,7 +151,7 @@ class _AssetFilterSheetState extends State<AssetFilterSheet> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () => Navigator.of(context).pop({
-                'status': _status,
+                'statuses': _statuses.isEmpty ? null : _statuses.toList(),
                 'type': _type,
                 'locationId': _locationId,
               }),
@@ -176,10 +176,15 @@ class _AssetFilterSheetState extends State<AssetFilterSheet> {
       runSpacing: 8,
       children: options.map((opt) {
         final (status, label, color) = opt;
-        final selected = _status == status;
+        final selected = _statuses.contains(status);
         return GestureDetector(
-          onTap: () =>
-              setState(() => _status = selected ? null : status),
+          onTap: () => setState(() {
+            if (_statuses.contains(status)) {
+              _statuses.remove(status);
+            } else {
+              _statuses.add(status);
+            }
+          }),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding:

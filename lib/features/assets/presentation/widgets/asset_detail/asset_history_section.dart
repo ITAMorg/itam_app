@@ -12,48 +12,60 @@ class AssetHistorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     final tickets = asset.tickets;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Historique des tickets',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-        const SizedBox(height: 8),
-        if (tickets.isEmpty)
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.surface.withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.border.withValues(alpha: 0.15),
-              ),
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+            child: Text(
+              'HISTORIQUE DES TICKETS',
+              style: AppTextStyles.titleSection,
             ),
-            child: Row(
+          ),
+          _Divider(),
+          if (tickets.isEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_outline_rounded,
+                    color: AppColors.textSecondary.withValues(alpha: 0.4),
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    'Aucun ticket pour ce matériel',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary.withValues(alpha: 0.4),
+                        ),
+                  ),
+                ],
+              ),
+            )
+          else
+            Column(
               children: [
-                Icon(
-                  Icons.check_circle_outline_rounded,
-                  color: AppColors.textSecondary.withValues(alpha: 0.4),
-                  size: 20,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'Aucun ticket pour ce matériel',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary.withValues(alpha: 0.4),
-                      ),
-                ),
+                for (int i = 0; i < tickets.length; i++) ...[
+                  _TicketHistoryItem(ticket: tickets[i]),
+                  if (i < tickets.length - 1)
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: AppColors.border.withValues(alpha: 0.15),
+                    ),
+                ],
               ],
             ),
-          )
-        else
-          ...tickets.map((ticket) => _TicketHistoryItem(ticket: ticket)),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -63,80 +75,60 @@ class _TicketHistoryItem extends StatelessWidget {
 
   const _TicketHistoryItem({required this.ticket});
 
+  Color _priorityColor(String priority) => switch (priority) {
+        'LOW' => const Color(0xFF22C55E),
+        'MEDIUM' => const Color(0xFFF59E0B),
+        'HIGH' => const Color(0xFFEF4444),
+        _ => AppColors.textSecondary,
+      };
+
+  String _formatDate(DateTime date) =>
+    '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: InkWell(
-        onTap: () => context.push('/tickets/${ticket.id}'),
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            color: AppColors.surface.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColors.border.withValues(alpha: 0.15),
+    return InkWell(
+      onTap: () => context.push('/tickets/${ticket.id}'),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 4,
+              height: 36,
+              decoration: BoxDecoration(
+                color: _priorityColor(ticket.priority),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              // Indicateur priorité
-              Container(
-                width: 4,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: _priorityColor(ticket.priority),
-                  borderRadius: BorderRadius.circular(2),
-                ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ticket.title,
+                    style: AppTextStyles.bodySection,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    _formatDate(ticket.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              // Titre + référence
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ticket.title,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      ticket.reference,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              // Badge statut
-              _StatusBadge(status: ticket.status),
-            ],
-          ),
+            ),
+            const SizedBox(width: 8),
+            _StatusBadge(status: ticket.status),
+          ],
         ),
       ),
     );
-  }
-
-  Color _priorityColor(String priority) {
-    switch (priority) {
-      case 'LOW':
-        return Color(0xFF1D4ED8);
-      case 'MEDIUM':
-        return Colors.orange;
-      case 'HIGH':
-        return Colors.red;
-      case 'CRITICAL':
-        return Colors.red;
-      default:
-        return AppColors.textSecondary;
-    }
   }
 }
 
@@ -150,7 +142,6 @@ class _StatusBadge extends StatelessWidget {
     final (label, color) = switch (status) {
       'OPEN' => ('Ouvert', const Color(0xFF1D4ED8)),
       'IN_PROGRESS' => ('En cours', Colors.orange),
-      'ON_HOLD' => ('En attente', AppColors.textSecondary),
       'RESOLVED' => ('Résolu', Colors.green),
       'CLOSED' => ('Fermé', AppColors.textSecondary),
       _ => (status, AppColors.textSecondary),
@@ -169,6 +160,17 @@ class _StatusBadge extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
       ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      thickness: 1,
+      color: AppColors.border.withValues(alpha: 0.15),
     );
   }
 }

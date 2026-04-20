@@ -12,7 +12,7 @@ class AppColors {
 
   // Text
   static const textPrimary = Colors.white;
-  static const textSecondary = Colors.white;
+  static const textSecondary = Color(0xFFB2B2B2);
 }
 
 class AssetStatusColors {
@@ -89,6 +89,30 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
   );
+
+  static TextStyle get titleSection => GoogleFonts.syne(
+    color: AppColors.textSecondary,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle get labelSection => GoogleFonts.syne(
+    color: AppColors.textSecondary,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle get bodySection => GoogleFonts.syne(
+    color: AppColors.textPrimary,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle get labelChip => GoogleFonts.syne(
+    color: AppColors.textPrimary,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+  );
 }
 
 class AppTheme {
@@ -114,6 +138,16 @@ class AppTheme {
           fontSize: 11,
           fontWeight: FontWeight.w600,
           letterSpacing: 1.2,
+        ),
+        titleSmall: TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        labelLarge: TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
         ),
       ),
     ),
