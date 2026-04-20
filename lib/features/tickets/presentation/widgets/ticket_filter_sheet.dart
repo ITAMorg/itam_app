@@ -3,13 +3,13 @@ import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 
 class TicketFilterSheet extends StatefulWidget {
-  final TicketStatus? initialStatus;
-  final TicketPriority? initialPriority;
+  final Set<TicketStatus> initialStatuses;
+  final Set<TicketPriority> initialPriorities;
 
   const TicketFilterSheet({
     super.key,
-    this.initialStatus,
-    this.initialPriority,
+    this.initialStatuses = const {},
+    this.initialPriorities = const {},
   });
 
   @override
@@ -17,15 +17,17 @@ class TicketFilterSheet extends StatefulWidget {
 }
 
 class _TicketFilterSheetState extends State<TicketFilterSheet> {
-  TicketStatus? _status;
-  TicketPriority? _priority;
+  late Set<TicketStatus> _statuses;
+  late Set<TicketPriority> _priorities;
 
   @override
   void initState() {
     super.initState();
-    _status = widget.initialStatus;
-    _priority = widget.initialPriority;
+    _statuses = Set.from(widget.initialStatuses);
+    _priorities = Set.from(widget.initialPriorities);
   }
+
+  bool get _hasFilters => _statuses.isNotEmpty || _priorities.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,6 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Handle
           Center(
             child: Container(
               width: 40,
@@ -51,17 +52,15 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
             ),
           ),
           const SizedBox(height: 20),
-
-          // Header
           Row(
             children: [
               Text('Filtres', style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
-              if (_status != null || _priority != null)
+              if (_hasFilters)
                 GestureDetector(
                   onTap: () => setState(() {
-                    _status = null;
-                    _priority = null;
+                    _statuses.clear();
+                    _priorities.clear();
                   }),
                   child: Text(
                     'Réinitialiser',
@@ -74,8 +73,6 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
             ],
           ),
           const SizedBox(height: 20),
-
-          // Statut
           Text(
             'STATUT',
             style: Theme.of(context).textTheme.labelSmall!.copyWith(
@@ -86,8 +83,6 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
           const SizedBox(height: 10),
           _buildStatusOptions(),
           const SizedBox(height: 20),
-
-          // Priorité
           Text(
             'PRIORITÉ',
             style: Theme.of(context).textTheme.labelSmall!.copyWith(
@@ -98,14 +93,12 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
           const SizedBox(height: 10),
           _buildPriorityOptions(),
           const SizedBox(height: 24),
-
-          // Bouton appliquer
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () => Navigator.of(context).pop({
-                'status': _status,
-                'priority': _priority,
+                'statuses': _statuses.toList(),
+                'priorities': _priorities.toList(),
               }),
               child: const Text('Appliquer'),
             ),
@@ -117,7 +110,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
 
   Widget _buildStatusOptions() {
     final options = [
-      (TicketStatus.open, 'Ouvert', Colors.red),
+      (TicketStatus.open, 'Ouvert', AppColors.primary),
       (TicketStatus.inProgress, 'En cours', Colors.orange),
       (TicketStatus.resolved, 'Résolu', Colors.green),
       (TicketStatus.closed, 'Fermé', AppColors.textSecondary),
@@ -128,9 +121,11 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
       runSpacing: 8,
       children: options.map((opt) {
         final (status, label, color) = opt;
-        final selected = _status == status;
+        final selected = _statuses.contains(status);
         return GestureDetector(
-          onTap: () => setState(() => _status = selected ? null : status),
+          onTap: () => setState(() {
+            selected ? _statuses.remove(status) : _statuses.add(status);
+          }),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -176,7 +171,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
 
   Widget _buildPriorityOptions() {
     final options = [
-      (TicketPriority.low, 'Basse', Colors.green),
+      (TicketPriority.low, 'Faible', Colors.green),
       (TicketPriority.medium, 'Moyenne', Colors.orange),
       (TicketPriority.high, 'Haute', Colors.red),
     ];
@@ -186,10 +181,13 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
       runSpacing: 8,
       children: options.map((opt) {
         final (priority, label, color) = opt;
-        final selected = _priority == priority;
+        final selected = _priorities.contains(priority);
         return GestureDetector(
-          onTap: () =>
-              setState(() => _priority = selected ? null : priority),
+          onTap: () => setState(() {
+            selected
+                ? _priorities.remove(priority)
+                : _priorities.add(priority);
+          }),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),

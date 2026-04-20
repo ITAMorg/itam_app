@@ -65,7 +65,7 @@ class AppTextStyles {
   );
 
   static TextStyle get buttonLabel => GoogleFonts.syne(
-    color: Colors.white,
+    color: AppColors.textPrimary,
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );

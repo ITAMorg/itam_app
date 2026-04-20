@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
+import 'package:itam_app/core/widgets/status_chip.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
 import 'package:go_router/go_router.dart';
+import 'package:itam_app/core/widgets/priority_chip.dart';
 
 class TicketCard extends StatelessWidget {
   final Ticket ticket;
@@ -16,9 +18,7 @@ class TicketCard extends StatelessWidget {
     final priorityLabel = _priorityLabel(ticket.priority);
 
     return GestureDetector(
-      onTap: () {
-        context.push('/tickets/${ticket.id}');
-      },
+      onTap: () => context.push('/tickets/${ticket.id}'),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -29,20 +29,18 @@ class TicketCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Barre colorée gauche
-            Container(
-              width: 4,
-              height: 72,
-              decoration: BoxDecoration(
-                color: priorityColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+              child: Container(
+                width: 4,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: priorityColor,
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ),
             const SizedBox(width: 12),
-            // Contenu
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -60,8 +58,7 @@ class TicketCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        // Badge statut
-                        _Badge(
+                        StatusChip(
                           label: statusLabel,
                           color: statusColor,
                         ),
@@ -79,8 +76,7 @@ class TicketCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        // Badge priorité
-                        _Badge(
+                        PriorityChip(
                           label: priorityLabel,
                           color: priorityColor,
                         ),
@@ -98,8 +94,8 @@ class TicketCard extends StatelessWidget {
   }
 
   Color _priorityColor(TicketPriority priority) => switch (priority) {
-        TicketPriority.low => const Color(0xFF22C55E),
-        TicketPriority.medium => const Color(0xFFF59E0B),
+        TicketPriority.low => const Color(0xFF2E7D32),
+        TicketPriority.medium => const Color(0xFFDD862E),
         TicketPriority.high => const Color(0xFFEF4444),
       };
 
@@ -111,8 +107,8 @@ class TicketCard extends StatelessWidget {
 
   Color _statusColor(TicketStatus status) => switch (status) {
         TicketStatus.open => const Color(0xFF3B82F6),
-        TicketStatus.inProgress => const Color(0xFFF59E0B),
-        TicketStatus.resolved => const Color(0xFF22C55E),
+        TicketStatus.inProgress => const Color(0xFFDD862E),
+        TicketStatus.resolved => const Color(0xFF2E7D32),
         TicketStatus.closed => const Color(0xFF6B7280),
       };
 
@@ -122,27 +118,4 @@ class TicketCard extends StatelessWidget {
         TicketStatus.resolved => 'Résolu',
         TicketStatus.closed => 'Fermé',
       };
-}
-
-class _Badge extends StatelessWidget {
-  final String label;
-  final Color color;
-
-  const _Badge({required this.label, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall!.copyWith(color: color),
-      ),
-    );
-  }
 }

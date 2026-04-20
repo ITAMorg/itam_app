@@ -26,6 +26,8 @@ abstract class TicketAsset with _$TicketAsset {
     String? brand,
     String? model,
     String? serialNumber,
+    String? iconKey,
+    String? colorKey,
   }) = _TicketAsset;
 }
 

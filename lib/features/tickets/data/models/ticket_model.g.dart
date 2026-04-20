@@ -32,6 +32,8 @@ _$TicketAssetModelImpl _$$TicketAssetModelImplFromJson(
   brand: json['brand'] as String?,
   model: json['model'] as String?,
   serialNumber: json['serialNumber'] as String?,
+  iconKey: json['iconKey'] as String?,
+  colorKey: json['colorKey'] as String?,
 );
 
 Map<String, dynamic> _$$TicketAssetModelImplToJson(
@@ -42,6 +44,8 @@ Map<String, dynamic> _$$TicketAssetModelImplToJson(
   'brand': instance.brand,
   'model': instance.model,
   'serialNumber': instance.serialNumber,
+  'iconKey': instance.iconKey,
+  'colorKey': instance.colorKey,
 };
 
 _$TicketCommentModelImpl _$$TicketCommentModelImplFromJson(

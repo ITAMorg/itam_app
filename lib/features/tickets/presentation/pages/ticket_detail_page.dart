@@ -34,7 +34,7 @@ class TicketDetailPage extends ConsumerWidget {
           final canEdit = (isAdmin || isTech) && !isClosed;
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

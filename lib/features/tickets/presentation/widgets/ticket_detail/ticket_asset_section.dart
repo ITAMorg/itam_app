@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:itam_app/core/utils/color_resolver.dart';
+import 'package:itam_app/core/utils/icon_resolver.dart';
 import 'package:itam_app/features/assets/presentation/providers/asset_detail_provider.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/features/tickets/domain/entities/ticket.dart';
@@ -12,6 +14,8 @@ class TicketAssetSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final assetColor = ColorResolver.resolve(asset!.colorKey ?? 'blue');
+    final iconData = IconResolver.resolve(asset!.iconKey ?? 'laptop');
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -54,19 +58,14 @@ class TicketAssetSection extends ConsumerWidget {
                 child: Row(
                   children: [
                     Container(
-                      width: 44,
-                      height: 44,
+                      width: 50,
+                      height: 50,
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.15),
+                        color: assetColor.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.5)),
+                        border: Border.all(color: assetColor),
                       ),
-                      child: const Icon(
-                        Icons.laptop_rounded,
-                        color: AppColors.primary,
-                        size: 22,
-                      ),
+                      child: Icon(iconData, color: Colors.white, size: 27),
                     ),
                     const SizedBox(width: 12),
                     Expanded(

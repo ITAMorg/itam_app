@@ -19,8 +19,8 @@ class TicketListPage extends ConsumerStatefulWidget {
 class _TicketListPageState extends ConsumerState<TicketListPage> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
-  TicketStatus? _selectedStatus;
-  TicketPriority? _selectedPriority;
+  Set<TicketStatus> _selectedStatuses = {};
+  Set<TicketPriority> _selectedPriorities = {};
 
   @override
   void dispose() {
@@ -29,7 +29,7 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
   }
 
   bool get _hasActiveFilters =>
-      _selectedStatus != null || _selectedPriority != null;
+    _selectedStatuses.isNotEmpty || _selectedPriorities.isNotEmpty;
 
   double get _headerHeight => _hasActiveFilters ? 100 : 64;
 
@@ -39,15 +39,15 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => TicketFilterSheet(
-        initialStatus: _selectedStatus,
-        initialPriority: _selectedPriority,
+        initialStatuses: _selectedStatuses,
+        initialPriorities: _selectedPriorities,
       ),
     );
 
     if (result != null) {
       setState(() {
-        _selectedStatus = result['status'] as TicketStatus?;
-        _selectedPriority = result['priority'] as TicketPriority?;
+        _selectedStatuses = (result['statuses'] as List<TicketStatus>).toSet();
+        _selectedPriorities = (result['priorities'] as List<TicketPriority>).toSet();
       });
     }
   }
@@ -61,21 +61,8 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-              horizontalPadding, 12, horizontalPadding, 12),
-          child: ActionButton(
-            label: 'Ouvrir un incident',
-            color: Colors.red,
-            icon: Icons.add_rounded,
-            onPressed: () => context.push('/tickets/create'),
-          ),
-        ),
-      ),
       body: Stack(
         children: [
-          // Liste qui prend tout l'espace
           ticketsAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (e, _) => Center(
@@ -91,9 +78,9 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                             .contains(_searchQuery) ||
                         t.reference.toLowerCase().contains(_searchQuery);
                 final matchesStatus =
-                    _selectedStatus == null || t.status == _selectedStatus;
+                    _selectedStatuses.isEmpty || _selectedStatuses.contains(t.status);
                 final matchesPriority =
-                    _selectedPriority == null || t.priority == _selectedPriority;
+                    _selectedPriorities.isEmpty || _selectedPriorities.contains(t.priority);
                 return matchesSearch && matchesStatus && matchesPriority;
               }).toList();
 
@@ -120,7 +107,8 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                             horizontalPadding,
                             _headerHeight + 8,
                             horizontalPadding,
-                            8),
+                            80,
+                          ),
                         children: [
                           SizedBox(
                               height:
@@ -139,7 +127,8 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                             horizontalPadding,
                             _headerHeight + 8,
                             horizontalPadding,
-                            8),
+                            80,
+                          ),
                         itemCount: filtered.length,
                         separatorBuilder: (_, __) => const SizedBox(height: 10),
                         itemBuilder: (context, index) =>
@@ -148,8 +137,6 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
               );
             },
           ),
-
-          // Header flottant avec gradient
           Positioned(
             top: 0,
             left: 0,
@@ -185,28 +172,40 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          if (_selectedStatus != null)
-                            _ActiveFilterChip(
-                              label: _statusLabel(_selectedStatus!),
-                              color: _statusColor(_selectedStatus!),
-                              onRemove: () =>
-                                  setState(() => _selectedStatus = null),
+                          ..._selectedStatuses.map((status) => Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: _ActiveFilterChip(
+                              label: _statusLabel(status),
+                              color: _statusColor(status),
+                              onRemove: () => setState(() => _selectedStatuses.remove(status)),
                             ),
-                          if (_selectedPriority != null) ...[
-                            if (_selectedStatus != null)
-                              const SizedBox(width: 8),
-                            _ActiveFilterChip(
-                              label: _priorityLabel(_selectedPriority!),
-                              color: _priorityColor(_selectedPriority!),
-                              onRemove: () =>
-                                  setState(() => _selectedPriority = null),
+                          )),
+                          ..._selectedPriorities.map((priority) => Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: _ActiveFilterChip(
+                              label: _priorityLabel(priority),
+                              color: _priorityColor(priority),
+                              onRemove: () => setState(() => _selectedPriorities.remove(priority)),
                             ),
-                          ],
+                          )),
                         ],
                       ),
                     ),
                   ],
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            left: horizontalPadding,
+            right: horizontalPadding,
+            child: SafeArea(
+              child: ActionButton(
+                label: 'Ouvrir un incident',
+                color: Colors.red,
+                icon: Icons.add_rounded,
+                onPressed: () => context.push('/tickets/create'),
               ),
             ),
           ),
@@ -223,14 +222,14 @@ class _TicketListPageState extends ConsumerState<TicketListPage> {
       };
 
   Color _statusColor(TicketStatus s) => switch (s) {
-        TicketStatus.open => Colors.red,
+        TicketStatus.open => AppColors.primary,
         TicketStatus.inProgress => Colors.orange,
         TicketStatus.resolved => Colors.green,
         TicketStatus.closed => AppColors.textSecondary,
       };
 
   String _priorityLabel(TicketPriority p) => switch (p) {
-        TicketPriority.low => 'Basse',
+        TicketPriority.low => 'Faible',
         TicketPriority.medium => 'Moyenne',
         TicketPriority.high => 'Haute',
       };

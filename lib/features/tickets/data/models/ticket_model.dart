@@ -25,6 +25,8 @@ class TicketAssetModel with _$TicketAssetModel {
     String? brand,
     String? model,
     String? serialNumber,
+    String? iconKey,   // 👈
+    String? colorKey,  // 👈
   }) = _TicketAssetModel;
 
   factory TicketAssetModel.fromJson(Map<String, dynamic> json) =>
@@ -126,6 +128,8 @@ extension TicketModelMapper on TicketModel {
                 brand: asset!.brand,
                 model: asset!.model,
                 serialNumber: asset!.serialNumber,
+                iconKey: asset!.iconKey,
+                colorKey: asset!.colorKey,
               )
             : null,
         comments: comments

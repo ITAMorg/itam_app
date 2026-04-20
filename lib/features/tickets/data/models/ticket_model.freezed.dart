@@ -244,6 +244,8 @@ mixin _$TicketAssetModel {
   String? get brand => throw _privateConstructorUsedError;
   String? get model => throw _privateConstructorUsedError;
   String? get serialNumber => throw _privateConstructorUsedError;
+  String? get iconKey => throw _privateConstructorUsedError; // 👈
+  String? get colorKey => throw _privateConstructorUsedError;
 
   /// Serializes this TicketAssetModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -268,6 +270,8 @@ abstract class $TicketAssetModelCopyWith<$Res> {
     String? brand,
     String? model,
     String? serialNumber,
+    String? iconKey,
+    String? colorKey,
   });
 }
 
@@ -291,6 +295,8 @@ class _$TicketAssetModelCopyWithImpl<$Res, $Val extends TicketAssetModel>
     Object? brand = freezed,
     Object? model = freezed,
     Object? serialNumber = freezed,
+    Object? iconKey = freezed,
+    Object? colorKey = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -314,6 +320,14 @@ class _$TicketAssetModelCopyWithImpl<$Res, $Val extends TicketAssetModel>
                 ? _value.serialNumber
                 : serialNumber // ignore: cast_nullable_to_non_nullable
                       as String?,
+            iconKey: freezed == iconKey
+                ? _value.iconKey
+                : iconKey // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            colorKey: freezed == colorKey
+                ? _value.colorKey
+                : colorKey // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -335,6 +349,8 @@ abstract class _$$TicketAssetModelImplCopyWith<$Res>
     String? brand,
     String? model,
     String? serialNumber,
+    String? iconKey,
+    String? colorKey,
   });
 }
 
@@ -357,6 +373,8 @@ class __$$TicketAssetModelImplCopyWithImpl<$Res>
     Object? brand = freezed,
     Object? model = freezed,
     Object? serialNumber = freezed,
+    Object? iconKey = freezed,
+    Object? colorKey = freezed,
   }) {
     return _then(
       _$TicketAssetModelImpl(
@@ -380,6 +398,14 @@ class __$$TicketAssetModelImplCopyWithImpl<$Res>
             ? _value.serialNumber
             : serialNumber // ignore: cast_nullable_to_non_nullable
                   as String?,
+        iconKey: freezed == iconKey
+            ? _value.iconKey
+            : iconKey // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        colorKey: freezed == colorKey
+            ? _value.colorKey
+            : colorKey // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -394,6 +420,8 @@ class _$TicketAssetModelImpl implements _TicketAssetModel {
     this.brand,
     this.model,
     this.serialNumber,
+    this.iconKey,
+    this.colorKey,
   });
 
   factory _$TicketAssetModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -409,10 +437,15 @@ class _$TicketAssetModelImpl implements _TicketAssetModel {
   final String? model;
   @override
   final String? serialNumber;
+  @override
+  final String? iconKey;
+  // 👈
+  @override
+  final String? colorKey;
 
   @override
   String toString() {
-    return 'TicketAssetModel(id: $id, name: $name, brand: $brand, model: $model, serialNumber: $serialNumber)';
+    return 'TicketAssetModel(id: $id, name: $name, brand: $brand, model: $model, serialNumber: $serialNumber, iconKey: $iconKey, colorKey: $colorKey)';
   }
 
   @override
@@ -425,13 +458,24 @@ class _$TicketAssetModelImpl implements _TicketAssetModel {
             (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.model, model) || other.model == model) &&
             (identical(other.serialNumber, serialNumber) ||
-                other.serialNumber == serialNumber));
+                other.serialNumber == serialNumber) &&
+            (identical(other.iconKey, iconKey) || other.iconKey == iconKey) &&
+            (identical(other.colorKey, colorKey) ||
+                other.colorKey == colorKey));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, brand, model, serialNumber);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    name,
+    brand,
+    model,
+    serialNumber,
+    iconKey,
+    colorKey,
+  );
 
   /// Create a copy of TicketAssetModel
   /// with the given fields replaced by the non-null parameter values.
@@ -457,6 +501,8 @@ abstract class _TicketAssetModel implements TicketAssetModel {
     final String? brand,
     final String? model,
     final String? serialNumber,
+    final String? iconKey,
+    final String? colorKey,
   }) = _$TicketAssetModelImpl;
 
   factory _TicketAssetModel.fromJson(Map<String, dynamic> json) =
@@ -472,6 +518,10 @@ abstract class _TicketAssetModel implements TicketAssetModel {
   String? get model;
   @override
   String? get serialNumber;
+  @override
+  String? get iconKey; // 👈
+  @override
+  String? get colorKey;
 
   /// Create a copy of TicketAssetModel
   /// with the given fields replaced by the non-null parameter values.
