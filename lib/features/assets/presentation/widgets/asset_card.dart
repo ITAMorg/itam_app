@@ -7,8 +7,9 @@ import 'package:itam_app/features/assets/domain/entities/asset.dart';
 
 class AssetCard extends StatelessWidget {
   final Asset asset;
+  final VoidCallback? onTap;
 
-  const AssetCard({super.key, required this.asset});
+   const AssetCard({super.key, required this.asset, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class AssetCard extends StatelessWidget {
     final iconData = IconResolver.resolve(asset.assetType.iconKey);
 
     return GestureDetector(
-      onTap: () => context.push('/assets/${asset.id}'),
+      onTap: onTap ?? () => context.push('/assets/${asset.id}'),
       child: Stack(
         children: [
           Container(

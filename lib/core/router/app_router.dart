@@ -11,6 +11,7 @@ import '../../features/tickets/presentation/pages/ticket_create_page.dart';
 import '../../features/qrcode/asset_qr_page.dart';
 import '../../features/qrcode/qr_scanner_page.dart';
 import '../../core/widgets/app_shell.dart';
+import '../../features/assets/domain/entities/asset.dart';
 
 part 'app_router.g.dart';
 
@@ -50,6 +51,7 @@ GoRouter appRouter(Ref ref) {
         path: '/assets/:id/qrcode',
         builder: (context, state) => AssetQrCodePage(
           assetId: state.pathParameters['id']!,
+          asset: state.extra as Asset,
         ),
       ),
       GoRoute(

@@ -87,7 +87,7 @@ class AssetHeaderCard extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => context.push('/assets/${ asset.id}/qrcode'),
+                onTap: () => context.push('/assets/${asset.id}/qrcode', extra: asset),
                 child: Container(
                   width: 40,
                   height: 40,

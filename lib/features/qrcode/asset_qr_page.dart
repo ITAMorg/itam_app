@@ -11,11 +11,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:itam_app/core/widgets/detail_top_bar.dart';
 import 'package:itam_app/core/theme/app_theme.dart';
 import 'package:itam_app/core/network/dio_client.dart';
+import 'package:itam_app/features/assets/domain/entities/asset.dart';
+import 'package:itam_app/features/assets/presentation/widgets/asset_card.dart';
 
 class AssetQrCodePage extends ConsumerStatefulWidget {
   final String assetId;
+  final Asset asset;
 
-  const AssetQrCodePage({super.key, required this.assetId});
+  const AssetQrCodePage({
+    super.key,
+    required this.assetId,
+    required this.asset,
+  });
 
   @override
   ConsumerState<AssetQrCodePage> createState() => _AssetQrCodePageState();
@@ -112,39 +119,66 @@ class _AssetQrCodePageState extends ConsumerState<AssetQrCodePage> {
           ? const Center(child: CircularProgressIndicator())
           : _error != null
               ? Center(child: Text(_error!))
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Image.memory(_qrBytes!, width: 240, height: 240),
-                    ),
-                    const SizedBox(height: 40),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _ActionBtn(
-                          icon: Icons.download_rounded,
-                          label: 'Enregistrer',
-                          onTap: _save,
-                        ),
-                        const SizedBox(width: 24),
-                        if (!Platform.isWindows)
-                          _ActionBtn(
-                            icon: Icons.share_rounded,
-                            label: 'Partager',
-                            onTap: _share,
-                          ),
-                        if (!Platform.isWindows)
-                          const SizedBox(width: 24),
-                        _ActionBtn(
-                          icon: Icons.print_rounded,
-                          label: 'Imprimer',
-                          onTap: _print,
-                        ),
-                      ],
-                    ),
-                  ],
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 24,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AssetCard(asset: widget.asset, onTap: () {}),
+                      const SizedBox(height: 32),
+                      _buildQrCard(),
+                      const SizedBox(height: 32),
+                      _buildActions(),
+                    ],
+                  ),
                 ),
+    );
+  }
+
+  Widget _buildQrCard() {
+    return Container(
+      width: 275,
+      height: 275,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          Image.memory(_qrBytes!, width: 220, height: 220),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _ActionBtn(
+          icon: Icons.download_rounded,
+          label: 'Enregistrer',
+          onTap: _save,
+        ),
+        if (!Platform.isWindows) ...[
+          const SizedBox(width: 16),
+          _ActionBtn(
+            icon: Icons.share_rounded,
+            label: 'Partager',
+            onTap: _share,
+          ),
+        ],
+        const SizedBox(width: 16),
+        _ActionBtn(
+          icon: Icons.print_rounded,
+          label: 'Imprimer',
+          onTap: _print,
+        ),
+      ],
     );
   }
 }
