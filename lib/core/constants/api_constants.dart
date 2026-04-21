@@ -3,7 +3,7 @@ import 'dart:io';
 class ApiConstants {
   static String get baseUrl {
     if (Platform.isAndroid) {
-      return 'http://192.168.1.49:3000/api';
+      return 'http://192.168.11.121:3000/api';
     }
     return 'http://localhost:3000/api';
   }
