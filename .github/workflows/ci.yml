@@ -39,5 +39,24 @@ jobs:
       - name: Test
         run: flutter test
 
+      - name: Restore keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/itam-release.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties << EOF
+          storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=../itam-release.jks
+          EOF
+
       - name: Build APK
         run: flutter build apk --release --no-pub
+
+      - name: Upload signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: itam-app-release-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
