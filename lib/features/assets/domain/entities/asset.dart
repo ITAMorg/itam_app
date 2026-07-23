@@ -53,7 +53,7 @@ class TicketSummary {
 class Asset {
   final String id;
   final String name;
-  final String serialNumber;
+  final String? serialNumber;
   final AssetStatus status;
   final AssetType assetType;
   final AssetLocation? location;
@@ -67,7 +67,7 @@ class Asset {
   const Asset({
     required this.id,
     required this.name,
-    required this.serialNumber,
+    this.serialNumber,
     required this.status,
     required this.assetType,
     this.location,

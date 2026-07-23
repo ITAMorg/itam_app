@@ -74,7 +74,7 @@ _$AssetModelImpl _$$AssetModelImplFromJson(
 ) => _$AssetModelImpl(
   id: (json['id'] as num).toInt(),
   name: json['name'] as String,
-  serialNumber: json['serialNumber'] as String,
+  serialNumber: json['serialNumber'] as String?,
   status: json['status'] as String,
   assetType: AssetTypeModel.fromJson(json['assetType'] as Map<String, dynamic>),
   location: json['location'] == null

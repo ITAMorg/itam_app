@@ -60,7 +60,7 @@ class _TicketAssetSectionState extends ConsumerState<TicketAssetSection> {
                 final q = _searchQuery.toLowerCase();
                 return a.name.toLowerCase().contains(q) ||
                     (a.brand?.toLowerCase().contains(q) ?? false) ||
-                    (a.serialNumber.toLowerCase().contains(q));
+                    (a.serialNumber?.toLowerCase().contains(q) ?? false);
               }).toList();
 
               return _buildAssetList(filtered, listLabel);

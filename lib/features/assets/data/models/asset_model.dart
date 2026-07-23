@@ -60,7 +60,7 @@ class AssetModel with _$AssetModel {
   const factory AssetModel({
     required int id,
     required String name,
-    required String serialNumber,
+    String? serialNumber,
     required String status,
     required AssetTypeModel assetType,
     AssetLocationModel? location,
@@ -75,7 +75,7 @@ class AssetModel with _$AssetModel {
   factory AssetModel.fromJson(Map<String, dynamic> json) => AssetModel(
         id: json['id'] as int,
         name: json['name'] as String,
-        serialNumber: json['serialNumber'] as String,
+        serialNumber: json['serialNumber'] as String?,
         status: json['status'] as String,
         assetType:
             AssetTypeModel.fromJson(json['type'] as Map<String, dynamic>),

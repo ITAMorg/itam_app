@@ -34,7 +34,7 @@ class AssetInfoSection extends StatelessWidget {
           _Divider(),
           _InfoRow(label: 'Modèle', value: asset.model),
           _Divider(),
-          _InfoRow(label: 'N° de série', value: asset.serialNumber.isEmpty ? null : asset.serialNumber),
+          _InfoRow(label: 'N° de série', value: asset.serialNumber?.isEmpty ?? true ? null : asset.serialNumber),
           _Divider(),
           _InfoRow(label: 'Fournisseur', value: asset.supplier?.name),
           const SizedBox(height: 4),

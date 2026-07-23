@@ -880,7 +880,7 @@ AssetModel _$AssetModelFromJson(Map<String, dynamic> json) {
 mixin _$AssetModel {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get serialNumber => throw _privateConstructorUsedError;
+  String? get serialNumber => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   AssetTypeModel get assetType => throw _privateConstructorUsedError;
   AssetLocationModel? get location => throw _privateConstructorUsedError;
@@ -911,7 +911,7 @@ abstract class $AssetModelCopyWith<$Res> {
   $Res call({
     int id,
     String name,
-    String serialNumber,
+    String? serialNumber,
     String status,
     AssetTypeModel assetType,
     AssetLocationModel? location,
@@ -945,7 +945,7 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? serialNumber = null,
+    Object? serialNumber = freezed,
     Object? status = null,
     Object? assetType = null,
     Object? location = freezed,
@@ -966,10 +966,10 @@ class _$AssetModelCopyWithImpl<$Res, $Val extends AssetModel>
                 ? _value.name
                 : name // ignore: cast_nullable_to_non_nullable
                       as String,
-            serialNumber: null == serialNumber
+            serialNumber: freezed == serialNumber
                 ? _value.serialNumber
                 : serialNumber // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
             status: null == status
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
@@ -1062,7 +1062,7 @@ abstract class _$$AssetModelImplCopyWith<$Res>
   $Res call({
     int id,
     String name,
-    String serialNumber,
+    String? serialNumber,
     String status,
     AssetTypeModel assetType,
     AssetLocationModel? location,
@@ -1098,7 +1098,7 @@ class __$$AssetModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? serialNumber = null,
+    Object? serialNumber = freezed,
     Object? status = null,
     Object? assetType = null,
     Object? location = freezed,
@@ -1119,10 +1119,10 @@ class __$$AssetModelImplCopyWithImpl<$Res>
             ? _value.name
             : name // ignore: cast_nullable_to_non_nullable
                   as String,
-        serialNumber: null == serialNumber
+        serialNumber: freezed == serialNumber
             ? _value.serialNumber
             : serialNumber // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
         status: null == status
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
@@ -1170,7 +1170,7 @@ class _$AssetModelImpl implements _AssetModel {
   const _$AssetModelImpl({
     required this.id,
     required this.name,
-    required this.serialNumber,
+    this.serialNumber,
     required this.status,
     required this.assetType,
     this.location,
@@ -1190,7 +1190,7 @@ class _$AssetModelImpl implements _AssetModel {
   @override
   final String name;
   @override
-  final String serialNumber;
+  final String? serialNumber;
   @override
   final String status;
   @override
@@ -1282,7 +1282,7 @@ abstract class _AssetModel implements AssetModel {
   const factory _AssetModel({
     required final int id,
     required final String name,
-    required final String serialNumber,
+    final String? serialNumber,
     required final String status,
     required final AssetTypeModel assetType,
     final AssetLocationModel? location,
@@ -1302,7 +1302,7 @@ abstract class _AssetModel implements AssetModel {
   @override
   String get name;
   @override
-  String get serialNumber;
+  String? get serialNumber;
   @override
   String get status;
   @override
