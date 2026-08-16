@@ -17,30 +17,24 @@ updates:
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
-    groups:
-      runtime-patch-minor:
-        dependency-type: "production"
-        update-types:
-          - "minor"
-          - "patch"
-      codegen-patch-minor:
-        dependency-type: "development"
-        update-types:
-          - "minor"
-          - "patch"
+
     ignore:
+      - dependency-name: "build_runner"
       - dependency-name: "freezed"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "freezed_annotation"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "riverpod_generator"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "riverpod_annotation"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "flutter_riverpod"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "json_serializable"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: "json_annotation"
+      - dependency-name: "riverpod_generator"
+      - dependency-name: "riverpod_annotation"
+      - dependency-name: "flutter_riverpod"
+
+    groups:
+      pub-patch-minor:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   # ─── Actions GitHub utilisées par la CI ──────────────────────────────────
   - package-ecosystem: "github-actions"
