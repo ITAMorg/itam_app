@@ -29,8 +29,18 @@ jobs:
           channel: 'stable'
           cache: true
 
+      # pubspec.lock étant versionné, cette étape installe exactement
+      # les versions qu'il fige : les builds sont reproductibles.
       - name: Install dependencies
         run: flutter pub get
+
+      # Relevé des dépendances en retard de version. N'échoue jamais :
+      # la sortie sert de support à la revue mensuelle des dépendances.
+      # L'écosystème pub ne fournit pas de commande d'audit de
+      # vulnérabilités ; cette couverture est assurée par les alertes
+      # Dependabot configurées sur le dépôt.
+      - name: Check outdated dependencies
+        run: flutter pub outdated || true
 
       - name: Run code generation
         run: dart run build_runner build --delete-conflicting-outputs
@@ -55,6 +65,11 @@ jobs:
           storeFile=../itam-release.jks
           EOF
 
+      # Exécuté sur tous les push : seul le build Gradle détecte les
+      # ruptures côté Android (manifeste, conflits de dépendances natives)
+      # que l'analyse statique et les tests ne voient pas.
+      # Hors tag, l'APK produit est signé avec la clé de débogage et
+      # n'est pas publié.
       - name: Build APK
         run: flutter build apk --release --no-pub
 

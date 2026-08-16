@@ -1,0 +1,56 @@
+# Surveillance automatisée des dépendances
+version: 2
+
+updates:
+  # ─── Dépendances Dart / Flutter (pub) ────────────────────────────────────
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "maintenance"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      runtime-patch-minor:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      codegen-patch-minor:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "freezed"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "freezed_annotation"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "riverpod_generator"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "riverpod_annotation"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "flutter_riverpod"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "json_serializable"
+        update-types: ["version-update:semver-major"]
+
+  # ─── Actions GitHub utilisées par la CI ──────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "chore(ci)"
