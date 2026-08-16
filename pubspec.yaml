@@ -12,36 +12,36 @@ dependencies:
   google_fonts: ^6.2.1
 
   # State management
-  flutter_riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  flutter_riverpod: ^3.4.2
+  riverpod_annotation: ^4.0.6
 
   # Navigation
   go_router: ^14.6.2
 
   # Network
-  dio: ^5.7.0
+  dio: ^5.11.0
 
   # Local storage
   flutter_secure_storage: ^9.2.2
   shared_preferences: ^2.3.3
 
   # Utilities
-  freezed_annotation: ^2.4.4
-  json_annotation: ^4.9.0
-  equatable: ^2.0.7
-  intl: ^0.20.1
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+  equatable: ^2.1.0
+  intl: ^0.20.3
   dart_jsonwebtoken: ^2.14.0
-  path_provider: ^2.1.4
+  path_provider: ^2.1.6
 
   # Qr code
   mobile_scanner: ^6.0.0
-  image_picker: ^1.1.2
+  image_picker: ^1.2.3
   file_picker: ^8.1.2
   share_plus: ^10.0.0
-  printing: ^5.13.1
-  gal: ^2.3.0
+  printing: ^5.15.0
+  gal: ^2.3.3
   flutter_zxing: ^1.8.0
-  pdf: ^3.11.0
+  pdf: ^3.13.0
 
 dev_dependencies:
   flutter_test:
@@ -50,10 +50,10 @@ dev_dependencies:
   mocktail: ^1.0.4
 
   # Code generation
-  build_runner: ^2.4.13
-  freezed: ^2.5.7
-  json_serializable: ^6.8.0
-  riverpod_generator: ^2.6.1
+  build_runner: ^2.16.0
+  freezed: ^4.0.0-dev.3
+  json_serializable: ^6.14.1
+  riverpod_generator: ^4.0.8
 
 flutter:
   uses-material-design: true
