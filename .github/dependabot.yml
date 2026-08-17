@@ -27,6 +27,7 @@ updates:
       - dependency-name: "riverpod_generator"
       - dependency-name: "riverpod_annotation"
       - dependency-name: "flutter_riverpod"
+      - dependency-name: "share_plus"
 
     groups:
       pub-patch-minor:
